@@ -1,14 +1,17 @@
 import axios from "axios";
 import React, { useReducer } from "react";
 import { url } from "../../url.json";
-import FormState from "../../interfaces/IFormState";
+import LoginFormState from "../../interfaces/ILoginFormState";
 import UserService from "../../services/UserService";
 
 type ActionType =
   | { type: "setEmail"; payload: string }
   | { type: "setPassword"; payload: string };
 
-function formReducer(state: FormState, action: ActionType): FormState {
+function formReducer(
+  state: LoginFormState,
+  action: ActionType
+): LoginFormState {
   switch (action.type) {
     case "setEmail":
       return { ...state, email: action.payload };
@@ -19,7 +22,7 @@ function formReducer(state: FormState, action: ActionType): FormState {
   }
 }
 
-function LoginForm() {
+function LoginForm({ userService }: { userService: UserService }) {
   const [state, dispatch] = useReducer(formReducer, {
     email: "",
     password: "",
@@ -34,24 +37,20 @@ function LoginForm() {
 
   async function submit() {
     try {
-      const response = await UserService.login(state);
+      const response = await userService.login(state);
       if (response.status) {
-        console.log("Logged In")
+        console.log("Logged In");
       }
     } catch (error) {
       console.error("Error submitting user data", error);
     }
   }
-return (
+  return (
     <div>
       <h3>Log In</h3>
       <div>
         <label>Email:</label>
-        <input
-          type="text"
-          value={state.email}
-          onChange={handleEmailChange}
-        />
+        <input type="text" value={state.email} onChange={handleEmailChange} />
       </div>
       <div>
         <label>Password:</label>
@@ -64,7 +63,7 @@ return (
       <button onClick={submit}>Submit</button>
       <div>
         {state.email}
-        {state.Password}
+        {state.password}
       </div>
     </div>
   );

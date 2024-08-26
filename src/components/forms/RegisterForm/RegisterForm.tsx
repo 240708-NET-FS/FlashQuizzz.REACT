@@ -1,8 +1,6 @@
-import axios from "axios";
 import React, { useReducer } from "react";
-import { url } from "../../url.json";
-import FormState from "../../interfaces/IFormState";
-import UserService from "../../services/UserService";
+import RegisterFormState from "../../../interfaces/IRegisterFormState";
+import UserService from "../../../services/UserService";
 
 type ActionType =
   | { type: "setFirstName"; payload: string }
@@ -11,29 +9,32 @@ type ActionType =
   | { type: "setPassword"; payload: string }
   | { type: "reset" };
 
-function formReducer(state: FormState, action: ActionType): FormState {
+function formReducer(
+  state: RegisterFormState,
+  action: ActionType
+): RegisterFormState {
   switch (action.type) {
     case "setFirstName":
-      return { ...state, firstName: action.payload };
+      return { ...state, FirstName: action.payload };
     case "setLastName":
-      return { ...state, lastName: action.payload };
+      return { ...state, LastName: action.payload };
     case "setEmail":
-      return { ...state, email: action.payload };
+      return { ...state, Email: action.payload };
     case "setPassword":
-      return { ...state, password: action.payload };
+      return { ...state, Password: action.payload };
     case "reset":
-      return { firstName: "", lastName: "", email: "", password: "" };
+      return { FirstName: "", LastName: "", Email: "", Password: "" };
     default:
       throw new Error("Unknown action type");
   }
 }
 
-function RegisterForm() {
+function RegisterForm({ userService }: { userService: UserService }) {
   const [state, dispatch] = useReducer(formReducer, {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    Password: "",
   });
 
   function handleFirstNameChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -51,11 +52,20 @@ function RegisterForm() {
   function handleReset() {
     dispatch({ type: "reset" });
   }
-  async function submit() {
+
+  async function handleFormSubmit() {
     try {
-      const response = await UserService.register(state);
+      const response = await userService.register(state);
       if (response.status) {
-        console.log("registered")
+        console.log("registered");
+        const loginResponse = await userService.login({
+          email: state.Email,
+          password: state.Password,
+        });
+        if (loginResponse.status) {
+          console.log("logged in");
+          localStorage.setItem("access-token", loginResponse.data.token);
+        }
       }
     } catch (error) {
       console.error("Error submitting user data", error);
@@ -69,7 +79,7 @@ function RegisterForm() {
         <label>First Name:</label>
         <input
           type="text"
-          value={state.firstName}
+          value={state.FirstName}
           onChange={handleFirstNameChange}
         />
       </div>
@@ -77,29 +87,31 @@ function RegisterForm() {
         <label>Last Name:</label>
         <input
           type="text"
-          value={state.lastName}
+          value={state.LastName}
           onChange={handleLastNameChange}
         />
       </div>
       <div>
         <label>Email:</label>
-        <input type="text" value={state.email} onChange={handleEmailChange} />
+        <input type="text" value={state.Email} onChange={handleEmailChange} />
       </div>
       <div>
         <label>Password:</label>
         <input
           type="password"
-          value={state.password}
+          value={state.Password}
           onChange={handlePasswordChange}
         />
       </div>
-      <button onClick={submit}>Submit</button>
+      <input type="submit" onClick={handleFormSubmit}>
+        Submit
+      </input>
       <button onClick={handleReset}>Reset Fields</button>
       <div>
-        {state.firstName}
-        {state.lastName}
-        {state.email}
-        {state.password}
+        {state.FirstName}
+        {state.LastName}
+        {state.Email}
+        {state.Password}
       </div>
     </div>
   );
