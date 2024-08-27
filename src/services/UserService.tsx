@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import RegisterFormState from "../interfaces/IRegisterFormState";
 import LoginFormState from "../interfaces/ILoginFormState";
-import { url } from "../url.json";
+import { url, registerEndpoint, loginEndpoint } from "../url.json";
 
 class UserService {
   register(userInfo: RegisterFormState): Promise<AxiosResponse> {
@@ -17,11 +17,11 @@ class UserService {
     if (userInfo.Password.length == 0) {
       throw new Error("Password cannot be empty.");
     }
-    return axios.post(url + "/user/register", {
-      FirstName: userInfo.FirstName,
-      LastName: userInfo.LastName,
-      Email: userInfo.Email,
-      Password: userInfo.Password,
+    return axios.post(url + registerEndpoint, {
+      firstName: userInfo.FirstName,
+      lastName: userInfo.LastName,
+      email: userInfo.Email,
+      password: userInfo.Password,
     });
   }
   login(userInfo: LoginFormState): Promise<AxiosResponse> {
@@ -31,7 +31,7 @@ class UserService {
     if (userInfo.password.length == 0) {
       throw new Error("Password cannot be empty.");
     }
-    return axios.post(url + "/user/login", {
+    return axios.post(url + loginEndpoint, {
       email: userInfo.email,
       password: userInfo.password,
     });

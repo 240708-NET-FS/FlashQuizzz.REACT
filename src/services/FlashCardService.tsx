@@ -2,10 +2,9 @@ import axios, { AxiosResponse } from "axios";
 import { url, flashCardEndpoint } from "../url.json";
 import IFlashCard from "../interfaces/IFlashCard";
 
-//NEEDS TO BE UPDATED
 class FlashCardService {
   getFlashCards(): Promise<AxiosResponse> {
-    return axios.get(url + flashCardEndpoint, {
+    return axios.get(url + flashCardEndpoint + "/user/" + localStorage.getItem("userID"), {
       headers: {
         Authorization: localStorage.getItem("access-token"),
       },
@@ -48,7 +47,7 @@ class FlashCardService {
 
   deleteFlashCard(id : number): Promise<AxiosResponse> {
     return axios.delete(
-      url + "/flash-cards/TO-UPDATE/" + id,
+      url + flashCardEndpoint + "/" + id,
       {
         headers: {
           Authorization: localStorage.getItem("access-token"),

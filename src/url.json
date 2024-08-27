@@ -2,5 +2,5 @@
     "loginEndpoint": "/user/login",
     "registerEndpoint": "/user/register",
     "userEndpoint": "/user/user",
-    "flashCardEndpoint": "/flash-cards"
+    "flashCardEndpoint": "/FlashCard"
 }
