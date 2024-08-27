@@ -5,11 +5,11 @@ import { test, expect, describe } from "@jest/globals";
 import RegisterForm from "../RegisterForm";
 import UserService from "../../../../services/UserService";
 import userEvent from "@testing-library/user-event";
-
+import { AxiosResponse } from "axios";
 describe("Register Form", () => {
   test("register form renders properly", () => {
     // arrange
-    render(<RegisterForm userService={new UserService()}/>);
+    render(<RegisterForm userService={new UserService()} />);
 
     const submitButton = screen.getByText("Submit");
     const resetButton = screen.getByText("Reset Fields");
@@ -20,21 +20,23 @@ describe("Register Form", () => {
 
   test("Register form submit button calls event handler", async () => {
     // arrange: render component
-    render(<RegisterForm userService={new UserService()}/>);
+    const userService = new UserService();
+    render(<RegisterForm userService={userService} />);
     const submitButton = screen.getByText("Submit");
 
     // arrange: get mock function for userservice.register
-    const userService = new UserService();
     const serviceSpy = jest.spyOn(userService, "register");
-    // act
-    await userEvent.click(submitButton);
+    serviceSpy.mockResolvedValue({} as AxiosResponse);
+    const submitButtonClick = () => userEvent.click(submitButton);
 
-    // assert: the spy should have been calld
+    // act: click submit button
+    await submitButtonClick();
+    // assert that the mock function was called
     expect(serviceSpy).toHaveBeenCalled();
   });
 
   test("Reset button  properly resets all form fields", async () => {
-    render(<RegisterForm userService={new UserService()}/>);
+    render(<RegisterForm userService={new UserService()} />);
     const resetButton = screen.getByText("Reset Fields");
     const formFields = screen.getAllByRole("textbox");
     const firstNameField = formFields[0];
@@ -52,6 +54,7 @@ describe("Register Form", () => {
     await userEvent.paste("paul471@revature.net");
 
     // act II: press reset button
+
     await userEvent.click(resetButton);
 
     // assert

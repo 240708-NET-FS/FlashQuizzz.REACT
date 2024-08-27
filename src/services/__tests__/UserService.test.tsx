@@ -1,8 +1,8 @@
 import UserService from "../UserService";
 import RegisterFormState from "../../interfaces/IRegisterFormState";
 import LoginFormState from "../../interfaces/ILoginFormState";
-import axios, { AxiosResponse } from "axios";
-import { url } from "../../url.json";
+import axios from "axios";
+import { url, registerEndpoint, loginEndpoint } from "../../url.json";
 import { test, expect } from "@jest/globals";
 jest.mock("axios");
 
@@ -95,7 +95,7 @@ describe("User Service", () => {
         Email: "johnsmith@revature.net",
         Password: "Password",
       };
-      const finalUrl = url + "user/register";
+      const finalUrl = url + registerEndpoint;
       // arrange: creat mock axios implementation
       const userService = new UserService();
       const axiosCallMock = (url: string, data: unknown): Promise<object> =>
@@ -127,7 +127,7 @@ describe("User Service", () => {
         password: "password",
       };
 
-      const finalUrl = url;
+      const finalUrl = url + loginEndpoint;
 
       const axiosCallMock = (url: string, data: unknown): Promise<object> =>
         Promise.resolve({

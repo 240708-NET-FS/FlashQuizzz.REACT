@@ -32,12 +32,10 @@ function formReducer(
   }
 }
 
-function EditFlashCardForm(
-  props: {
-    flashCard: IFlashCard["FlashCard"];
-    flashCardService: FlashCardService;
-  }
-) {
+function EditFlashCardForm(props: {
+  flashCard: IFlashCard["FlashCard"];
+  flashCardService: FlashCardService;
+}) {
   const [state, dispatch] = useReducer(formReducer, {
     FlashCardQuestion: "",
     FlashCardAnswer: "",
@@ -55,7 +53,7 @@ function EditFlashCardForm(
 
   async function handleSubmit() {
     try {
-      const cardToPatch: IFlashCard = {
+      const cardToPut: IFlashCard = {
         FlashCard: {
           FlashCardID: props.flashCard.FlashCardID,
           FlashCardQuestion: state.FlashCardQuestion,
@@ -63,7 +61,7 @@ function EditFlashCardForm(
           CreatedDate: new Date(),
         },
       };
-      const response = await props.flashCardService.patchFlashCard(cardToPatch);
+      const response = await props.flashCardService.putFlashCard(cardToPut);
       if (response.status) {
         console.log("flash card patched");
       }
@@ -77,21 +75,24 @@ function EditFlashCardForm(
       <h3>Edit a flash card</h3>
       <form>
         <p>Card ID: {props.flashCard.FlashCardID}</p>
-        <label>Question: </label>
+        <label>Question: 
         <input
           type="text"
           name="question"
           value={state.FlashCardQuestion}
           onChange={handleQuestionChange}
         />
+        </label>
         <br />
-        <label>Answer: </label>
-        <input
-          type="text"
-          name="answer"
-          value={state.FlashCardAnswer}
-          onChange={handleAnswerChange}
-        />
+        <label>
+          Answer:
+          <input
+            type="text"
+            name="answer"
+            value={state.FlashCardAnswer}
+            onChange={handleAnswerChange}
+          />
+        </label>
         <br />
         <button type="button" onClick={handleReset}>
           Reset
@@ -101,13 +102,12 @@ function EditFlashCardForm(
         </button>
       </form>
       <div>
-        {props.flashCard.FlashCardID}
-        <p></p>
-        {props.flashCard.FlashCardQuestion}
-        <p></p>
-        {props.flashCard.FlashCardAnswer}
-        <p></p>
-        {props.flashCard.CreatedDate.toString()}
+        <p>{props.flashCard.FlashCardID}</p>
+
+        <p>{props.flashCard.FlashCardQuestion}</p>
+
+        <p> {props.flashCard.FlashCardAnswer}</p>
+        <p>{props.flashCard.CreatedDate.toString()}</p>
       </div>
     </div>
   );

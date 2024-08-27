@@ -1,8 +1,7 @@
-import axios from "axios";
 import React, { useReducer } from "react";
-import { url } from "../../url.json";
-import LoginFormState from "../../interfaces/ILoginFormState";
-import UserService from "../../services/UserService";
+import { url } from "../../../url.json";
+import LoginFormState from "../../../interfaces/ILoginFormState";
+import UserService from "../../../services/UserService";
 
 type ActionType =
   | { type: "setEmail"; payload: string }
@@ -38,7 +37,7 @@ function LoginForm({ userService }: { userService: UserService }) {
   async function submit() {
     try {
       const response = await userService.login(state);
-      if (response.status) {
+      if (response.status == 200) {
         console.log("Logged In");
       }
     } catch (error) {
@@ -49,16 +48,20 @@ function LoginForm({ userService }: { userService: UserService }) {
     <div>
       <h3>Log In</h3>
       <div>
-        <label>Email:</label>
-        <input type="text" value={state.email} onChange={handleEmailChange} />
+        <label>
+          Email:
+          <input type="text" value={state.email} onChange={handleEmailChange} />
+        </label>
       </div>
       <div>
-        <label>Password:</label>
-        <input
-          type="text"
-          value={state.password}
-          onChange={handlePasswordChange}
-        />
+        <label>
+          Password:
+          <input
+            type="text"
+            value={state.password}
+            onChange={handlePasswordChange}
+          />
+        </label>
       </div>
       <button onClick={submit}>Submit</button>
       <div>

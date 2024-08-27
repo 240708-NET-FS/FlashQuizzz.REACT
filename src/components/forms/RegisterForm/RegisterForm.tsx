@@ -76,12 +76,14 @@ function RegisterForm({ userService }: { userService: UserService }) {
     <div>
       <h3>Register</h3>
       <div>
-        <label>First Name:</label>
-        <input
-          type="text"
-          value={state.FirstName}
-          onChange={handleFirstNameChange}
-        />
+        <label>
+          First Name:
+          <input
+            type="text"
+            value={state.FirstName}
+            onChange={handleFirstNameChange}
+          />
+        </label>
       </div>
       <div>
         <label>Last Name:</label>
@@ -92,20 +94,23 @@ function RegisterForm({ userService }: { userService: UserService }) {
         />
       </div>
       <div>
-        <label>Email:</label>
-        <input type="text" value={state.Email} onChange={handleEmailChange} />
+        <label>
+          Email:
+          <input type="text" value={state.Email} onChange={handleEmailChange} />
+        </label>
       </div>
       <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={state.Password}
-          onChange={handlePasswordChange}
-        />
+        <label>
+          Password:
+          <input
+            type="password"
+            value={state.Password}
+            onChange={handlePasswordChange}
+          />
+        </label>
       </div>
-      <input type="submit" onClick={handleFormSubmit}>
-        Submit
-      </input>
+      <input type="submit" value="Submit" onClick={handleFormSubmit} />
+
       <button onClick={handleReset}>Reset Fields</button>
       <div>
         {state.FirstName}

@@ -66,18 +66,22 @@ function AddFlashCardForm({
     <div>
       <h3>Add a flash card</h3>
       <form>
-        <label>Question:</label>
-        <input
-          type="text"
-          value={state.FlashCardQuestion}
-          onChange={handleQuestionChange}
-        />
-        <label>Answer:</label>
-        <input
-          type="text"
-          value={state.FlashCardAnswer}
-          onChange={handleAnswerChange}
-        />
+        <label>
+          Question:
+          <input
+            type="text"
+            value={state.FlashCardQuestion}
+            onChange={handleQuestionChange}
+          />
+        </label>
+        <label>
+          Answer:
+          <input
+            type="text"
+            value={state.FlashCardAnswer}
+            onChange={handleAnswerChange}
+          />
+        </label>
         <button onClick={handleReset}>Reset Fields</button>
         <button onClick={handleSubmit}>Submit</button>
       </form>

@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import FlashcardService from "../../services/FlashCardService";
 import IFlashCard from "../../interfaces/IFlashCard";
