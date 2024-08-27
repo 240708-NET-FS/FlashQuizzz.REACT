@@ -7,6 +7,7 @@ import CreateRootEditSingleton from "./CreateRootEditSingleton";
 import CreateRootDeleteSingleton from "./CreateRootDeleteSingleton";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import Category from "../../interfaces/Category";
 
 /**
  * A React component that displays a flashcard with a question, answer, and creation date.
@@ -36,12 +37,18 @@ function FlashCardComponent({ FlashCard }: IFlashCard): JSX.Element {
     );
   }
 
+  function getCategoryByValue(input: number): string | undefined {
+    return Object.keys(Category).find((item: string) => Category[item] === input);
+  }
+
   return (
     <div>
       <li>
         <p>{FlashCard.FlashCardID}</p>
         <p>{FlashCard.FlashCardQuestion}</p>
         <p>{FlashCard.FlashCardAnswer}</p>
+        <p>{FlashCard.UserID}</p>
+        <p>{getCategoryByValue(FlashCard.FlashCardCategory)}</p>
         <p>{FlashCard.CreatedDate.toString()}</p>
 
         <Popup

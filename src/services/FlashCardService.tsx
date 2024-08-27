@@ -13,9 +13,11 @@ class FlashCardService {
 
   postFlashCard({ FlashCard }: IFlashCard): Promise<AxiosResponse> {
     if (
+      FlashCard.UserID == null ||
       FlashCard.FlashCardID == null ||
       FlashCard.FlashCardQuestion == "" ||
       FlashCard.FlashCardAnswer == "" ||
+      FlashCard.FlashCardCategory == null ||
       FlashCard.CreatedDate == null
     ) {
       throw new Error("Flash card information is incomplete.");
@@ -23,16 +25,18 @@ class FlashCardService {
     return axios.post(url + flashCardEndpoint, {
       body: FlashCard,
       headers: {
-        Authorization: localStorage.getItem("access-token"),
+        "Content-Type": "application/json",
       },
     });
   }
 
   putFlashCard({ FlashCard }: IFlashCard): Promise<AxiosResponse> {
     if (
+      FlashCard.UserID == null ||
       FlashCard.FlashCardID == null ||
       FlashCard.FlashCardQuestion == "" ||
       FlashCard.FlashCardAnswer == "" ||
+      FlashCard.FlashCardCategory == null ||
       FlashCard.CreatedDate == null
     ) {
       throw new Error("Flash card information is incomplete.");
@@ -40,20 +44,13 @@ class FlashCardService {
     return axios.put(url + flashCardEndpoint, {
       body: FlashCard,
       headers: {
-        Authorization: localStorage.getItem("access-token"),
+        "Content-Type": "application/json",
       },
     });
   }
 
-  deleteFlashCard(id : number): Promise<AxiosResponse> {
-    return axios.delete(
-      url + flashCardEndpoint + "/" + id,
-      {
-        headers: {
-          Authorization: localStorage.getItem("access-token"),
-        },
-      }
-    );
+  deleteFlashCard(id: number): Promise<AxiosResponse> {
+    return axios.delete(url + flashCardEndpoint + "/" + id);
   }
 }
 export default FlashCardService;
