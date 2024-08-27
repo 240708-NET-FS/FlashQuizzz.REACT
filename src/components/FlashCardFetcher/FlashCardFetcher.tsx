@@ -5,27 +5,31 @@ import IFlashCard from "../../interfaces/IFlashCard";
 import FlashCardComponent from "../FlashCardComponent/FlashCardComponent";
 import React from "react";
 
-function FlashCardFetcher(flashcardService: FlashcardService) {
-  const [flashCards, setFlashCards] = useState<IFlashCard[]>([]);
+function FlashCardFetcher({
+  flashCardService,
+}: {
+  flashCardService: FlashcardService;
+}) {
+  const [flashCards, setFlashCards] = useState<IFlashCard["FlashCard"][]>([]);
 
   useEffect(() => {
     async function fetchFlashCards() {
       try {
-        const response = await flashcardService.getFlashCards();
+        const response = await flashCardService.getFlashCards();
         setFlashCards(response.data);
       } catch (error) {
         console.error("Error fetching flash cards: ", error);
       }
     }
     fetchFlashCards();
-  }, [flashcardService]);
+  }, [flashCardService]);
   return (
     <div>
       <h3>Flash cards here:</h3>
       <ul>
-        {flashCards ? (
+        {flashCards.length > 0 ? (
           flashCards.map((item, index) => (
-            <FlashCardComponent key={index} FlashCard={item.FlashCard} />
+            <FlashCardComponent key={index} FlashCard={item} />
           ))
         ) : (
           <p>Flash cards loading...</p>

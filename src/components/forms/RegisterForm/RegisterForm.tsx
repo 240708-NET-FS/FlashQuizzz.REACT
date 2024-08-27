@@ -58,14 +58,10 @@ function RegisterForm({ userService }: { userService: UserService }) {
       const response = await userService.register(state);
       if (response.status) {
         console.log("registered");
-        const loginResponse = await userService.login({
+        await userService.login({
           email: state.Email,
           password: state.Password,
         });
-        if (loginResponse.status) {
-          console.log("logged in");
-          localStorage.setItem("access-token", loginResponse.data.token);
-        }
       }
     } catch (error) {
       console.error("Error submitting user data", error);
@@ -109,15 +105,10 @@ function RegisterForm({ userService }: { userService: UserService }) {
           />
         </label>
       </div>
-      <input type="submit" value="Submit" onClick={handleFormSubmit} />
-
+      <button type="submit" onClick={handleFormSubmit}>
+        Submit
+      </button>
       <button onClick={handleReset}>Reset Fields</button>
-      <div>
-        {state.FirstName}
-        {state.LastName}
-        {state.Email}
-        {state.Password}
-      </div>
     </div>
   );
 }

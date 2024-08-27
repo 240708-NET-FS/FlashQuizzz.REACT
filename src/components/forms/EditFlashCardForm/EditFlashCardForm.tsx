@@ -71,45 +71,36 @@ function EditFlashCardForm(props: {
   }
 
   return (
-    <div>
-      <h3>Edit a flash card</h3>
-      <form>
-        <p>Card ID: {props.flashCard.FlashCardID}</p>
-        <label>Question: 
-        <input
-          type="text"
-          name="question"
-          value={state.FlashCardQuestion}
-          onChange={handleQuestionChange}
-        />
-        </label>
-        <br />
-        <label>
-          Answer:
+      <div>
+        <h3>Edit a flash card</h3>
+        <form>
+          <p>Card ID: {props.flashCard.FlashCardID}</p>
+          <label>Question: </label>
+          <input
+            type="text"
+            name="question"
+            value={state.FlashCardQuestion}
+            placeholder={props.flashCard.FlashCardQuestion}
+            onChange={handleQuestionChange}
+          />
+          <br />
+          <label>Answer: </label>
           <input
             type="text"
             name="answer"
             value={state.FlashCardAnswer}
+            placeholder={props.flashCard.FlashCardAnswer}
             onChange={handleAnswerChange}
           />
-        </label>
-        <br />
-        <button type="button" onClick={handleReset}>
-          Reset
-        </button>
-        <button type="submit" onClick={handleSubmit}>
-          Submit
-        </button>
-      </form>
-      <div>
-        <p>{props.flashCard.FlashCardID}</p>
-
-        <p>{props.flashCard.FlashCardQuestion}</p>
-
-        <p> {props.flashCard.FlashCardAnswer}</p>
-        <p>{props.flashCard.CreatedDate.toString()}</p>
+          <br />
+          <button type="button" onClick={handleReset}>
+            Reset
+          </button>
+          <button type="submit" onClick={handleSubmit}>
+            Submit
+          </button>
+        </form>
       </div>
-    </div>
   );
 }
 

@@ -45,5 +45,16 @@ class FlashCardService {
       },
     });
   }
+
+  deleteFlashCard(id : number): Promise<AxiosResponse> {
+    return axios.delete(
+      url + "/flash-cards/TO-UPDATE/" + id,
+      {
+        headers: {
+          Authorization: localStorage.getItem("access-token"),
+        },
+      }
+    );
+  }
 }
 export default FlashCardService;
