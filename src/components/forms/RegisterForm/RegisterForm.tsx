@@ -58,9 +58,11 @@ function RegisterForm({ userService }: { userService: UserService }) {
       const response = await userService.register(state);
       if (response.status) {
         console.log("registered");
-        await userService.login({
-          email: state.Email,
-          password: state.Password,
+        await userService.register({
+          FirstName: state.FirstName,
+          LastName: state.LastName,
+          Email: state.Email,
+          Password: state.Password
         });
       }
     } catch (error) {
@@ -69,47 +71,71 @@ function RegisterForm({ userService }: { userService: UserService }) {
   }
 
   return (
-    <div>
-      <h3>Register</h3>
-      <div>
-        <label>
-          First Name:
-          <input
-            type="text"
-            value={state.FirstName}
-            onChange={handleFirstNameChange}
-          />
-        </label>
+    <form className="mb-6">
+      <h4>&nbsp;</h4>
+      <div className="mb-3">
+        <label className="form-label">First Name</label>
+        <input type="text" value={state.FirstName} onChange={handleFirstNameChange} className="form-control" placeholder="Enter first name" />
       </div>
-      <div>
-        <label>Last Name:</label>
-        <input
-          type="text"
-          value={state.LastName}
-          onChange={handleLastNameChange}
-        />
+      <div className="mb-3">
+        <label className="form-label">Last Name</label>
+        <input type="text" value={state.LastName} onChange={handleLastNameChange} className="form-control" placeholder="Enter last name" />
       </div>
-      <div>
-        <label>
-          Email:
-          <input type="text" value={state.Email} onChange={handleEmailChange} />
-        </label>
+      <div className="mb-3">
+        <label className="form-label">Email address</label>
+        <input type="email" value={state.Email} onChange={handleEmailChange} className="form-control" placeholder="Enter email" />
       </div>
-      <div>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={state.Password}
-            onChange={handlePasswordChange}
-          />
-        </label>
+      <div className="mb-3">
+        <label className="form-label">Password</label>
+        <input type="password" value={state.Password} onChange={handlePasswordChange} className="form-control" placeholder="Password" />
       </div>
-      <button type="submit" onClick={handleFormSubmit}>
-        Submit
-      </button>
-      <button onClick={handleReset}>Reset Fields</button>
-    </div>
+      <div className="mb-6">
+        <button type="button" onClick={handleFormSubmit} className="btn btn-primary btn-lg btn-block w-100 mb-3">Signup</button>
+        <button type="button" onClick={handleReset} className="btn btn-outline-secondary btn-lg btn-block w-100">Reset</button>
+      </div>
+    </form>
+
+    // <div>
+    //   <h3>Register</h3>
+    //   <div>
+    //     <label>
+    //       First Name:
+    //       <input
+    //         type="text"
+    //         value={state.FirstName}
+    //         onChange={handleFirstNameChange}
+    //       />
+    //     </label>
+    //   </div>
+    //   <div>
+    //     <label>Last Name:</label>
+    //     <input
+    //       type="text"
+    //       value={state.LastName}
+    //       onChange={handleLastNameChange}
+    //     />
+    //   </div>
+    //   <div>
+    //     <label>
+    //       Email:
+    //       <input type="text" value={state.Email} onChange={handleEmailChange} />
+    //     </label>
+    //   </div>
+    //   <div>
+    //     <label>
+    //       Password:
+    //       <input
+    //         type="password"
+    //         value={state.Password}
+    //         onChange={handlePasswordChange}
+    //       />
+    //     </label>
+    //   </div>
+    //   <button type="submit" onClick={handleFormSubmit}>
+    //     Submit
+    //   </button>
+    //   <button onClick={handleReset}>Reset Fields</button>
+    // </div>
   );
 }
 

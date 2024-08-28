@@ -2,6 +2,9 @@ import React, { useReducer } from "react";
 import ICreateFlashCardFormState from "../../../interfaces/ICreateFlashCardFormState";
 import FlashCardService from "../../../services/FlashCardService";
 import IFlashCard from "../../../interfaces/IFlashCard";
+import Category from "../../../interfaces/Category";
+import Select from "react-select";
+import options from "../SelectOptions";
 
 type ActionType =
   | {
@@ -11,6 +14,10 @@ type ActionType =
   | {
       type: "editAnswer";
       payload: string;
+    }
+  | {
+      type: "editCategory";
+      payload: number;
     }
   | {
       type: "reset";
@@ -25,8 +32,14 @@ function formReducer(
       return { ...state, FlashCardQuestion: action.payload };
     case "editAnswer":
       return { ...state, FlashCardAnswer: action.payload };
+    case "editCategory":
+      return { ...state, FlashCardCategory: action.payload };
     case "reset":
-      return { FlashCardQuestion: "", FlashCardAnswer: "" };
+      return {
+        FlashCardQuestion: "",
+        FlashCardAnswer: "",
+        FlashCardCategory: Category.None,
+      };
     default:
       throw new Error("Unknown action type");
   }
@@ -39,6 +52,7 @@ function EditFlashCardForm(props: {
   const [state, dispatch] = useReducer(formReducer, {
     FlashCardQuestion: "",
     FlashCardAnswer: "",
+    FlashCardCategory: Category.None,
   });
 
   function handleQuestionChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -46,6 +60,12 @@ function EditFlashCardForm(props: {
   }
   function handleAnswerChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({ type: "editAnswer", payload: event?.target.value });
+  }
+  function handleCategoryChange(event: Category) {
+    dispatch({
+      type: "editCategory",
+      payload: event,
+    });
   }
   function handleReset() {
     dispatch({ type: "reset" });
@@ -58,6 +78,7 @@ function EditFlashCardForm(props: {
           FlashCardID: props.flashCard.FlashCardID,
           FlashCardQuestion: state.FlashCardQuestion,
           FlashCardAnswer: state.FlashCardAnswer,
+          FlashCardCategory: state.FlashCardCategory,
           CreatedDate: new Date(),
         },
       };
@@ -71,36 +92,44 @@ function EditFlashCardForm(props: {
   }
 
   return (
-      <div>
-        <h3>Edit a flash card</h3>
-        <form>
-          <p>Card ID: {props.flashCard.FlashCardID}</p>
-          <label>Question: </label>
-          <input
-            type="text"
-            name="question"
-            value={state.FlashCardQuestion}
-            placeholder={props.flashCard.FlashCardQuestion}
-            onChange={handleQuestionChange}
+    <div>
+      <h3>Edit a flash card</h3>
+      <form>
+        <p>Card ID: {props.flashCard.FlashCardID}</p>
+        <label>Question: </label>
+        <input
+          type="text"
+          name="question"
+          value={state.FlashCardQuestion}
+          placeholder={props.flashCard.FlashCardQuestion}
+          onChange={handleQuestionChange}
+        />
+        <br />
+        <label>Answer: </label>
+        <input
+          type="text"
+          name="answer"
+          value={state.FlashCardAnswer}
+          placeholder={props.flashCard.FlashCardAnswer}
+          onChange={handleAnswerChange}
+        />
+        <br />
+        <label>
+          Category:
+          <Select
+            options={options}
+            onChange={(choice) => handleCategoryChange(choice!.value)}
+            defaultValue={options[props.flashCard.FlashCardCategory]}
           />
-          <br />
-          <label>Answer: </label>
-          <input
-            type="text"
-            name="answer"
-            value={state.FlashCardAnswer}
-            placeholder={props.flashCard.FlashCardAnswer}
-            onChange={handleAnswerChange}
-          />
-          <br />
-          <button type="button" onClick={handleReset}>
-            Reset
-          </button>
-          <button type="submit" onClick={handleSubmit}>
-            Submit
-          </button>
-        </form>
-      </div>
+        </label>
+        <button type="button" onClick={handleReset}>
+          Reset
+        </button>
+        <button type="submit" onClick={handleSubmit}>
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
 

@@ -2,21 +2,18 @@ import axios, { AxiosResponse } from "axios";
 import { url, flashCardEndpoint } from "../url.json";
 import IFlashCard from "../interfaces/IFlashCard";
 
-//NEEDS TO BE UPDATED
 class FlashCardService {
   getFlashCards(): Promise<AxiosResponse> {
-    return axios.get(url + flashCardEndpoint, {
-      headers: {
-        Authorization: localStorage.getItem("access-token"),
-      },
-    });
+    return axios.get(url + flashCardEndpoint);
   }
 
   postFlashCard({ FlashCard }: IFlashCard): Promise<AxiosResponse> {
     if (
+      FlashCard.UserID == null ||
       FlashCard.FlashCardID == null ||
       FlashCard.FlashCardQuestion == "" ||
       FlashCard.FlashCardAnswer == "" ||
+      FlashCard.FlashCardCategory == null ||
       FlashCard.CreatedDate == null
     ) {
       throw new Error("Flash card information is incomplete.");
@@ -24,16 +21,18 @@ class FlashCardService {
     return axios.post(url + flashCardEndpoint, {
       body: FlashCard,
       headers: {
-        Authorization: localStorage.getItem("access-token"),
+        "Content-Type": "application/json",
       },
     });
   }
 
   putFlashCard({ FlashCard }: IFlashCard): Promise<AxiosResponse> {
     if (
+      FlashCard.UserID == null ||
       FlashCard.FlashCardID == null ||
       FlashCard.FlashCardQuestion == "" ||
       FlashCard.FlashCardAnswer == "" ||
+      FlashCard.FlashCardCategory == null ||
       FlashCard.CreatedDate == null
     ) {
       throw new Error("Flash card information is incomplete.");
@@ -41,20 +40,13 @@ class FlashCardService {
     return axios.put(url + flashCardEndpoint, {
       body: FlashCard,
       headers: {
-        Authorization: localStorage.getItem("access-token"),
+        "Content-Type": "application/json",
       },
     });
   }
 
-  deleteFlashCard(id : number): Promise<AxiosResponse> {
-    return axios.delete(
-      url + "/flash-cards/TO-UPDATE/" + id,
-      {
-        headers: {
-          Authorization: localStorage.getItem("access-token"),
-        },
-      }
-    );
+  deleteFlashCard(id: number): Promise<AxiosResponse> {
+    return axios.delete(url + flashCardEndpoint + "/" + id);
   }
 }
 export default FlashCardService;

@@ -31,7 +31,7 @@ class UserService {
     if (userInfo.password.length == 0) {
       throw new Error("Password cannot be empty.");
     }
-    return axios.post(url + "/user/login", {
+    return axios.post(url + "/login", {
       email: userInfo.email,
       password: userInfo.password,
     });

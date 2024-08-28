@@ -1,5 +1,5 @@
 { "url": "flashquizzz-a7enewa4bqfkghdn.eastus-01.azurewebsites.net/api",
-    "loginEndpoint": "/user/login",
+    "loginEndpoint": "/login",
     "registerEndpoint": "/user/register",
     "userEndpoint": "/user/user",
     "flashCardEndpoint": "/flash-cards"
