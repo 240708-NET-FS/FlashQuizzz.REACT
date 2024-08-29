@@ -3,8 +3,10 @@
   "compilerOptions": {
     "jsx": "react",
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["@testing-library/jest-dom"]
   },
+  "types": ["node", "jest", "@testing-library/jest-dom"],
 
   "references": [
     { "path": "./tsconfig.app.json" },

@@ -1,1 +1,7 @@
-{ "url": "to-be-replaced.url" }
+{
+  "url": "https://www.flashquizzz-a7enewa4bqfkghdn.eastus-01.azurewebsites.net",
+  "loginEndpoint": "/login",
+  "registerEndpoint": "/register",
+  "userEndpoint": "/api/user/user",
+  "flashCardEndpoint": "/api/flashcard"
+}
