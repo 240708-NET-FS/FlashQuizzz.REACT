@@ -19,6 +19,7 @@ function FlashCardDeleter(props: {
     );
     if (response.status) {
       console.log("flash card deleted");
+      window.location.reload();
     } else {
       console.log("Error deleting flash card");
     }

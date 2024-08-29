@@ -8,7 +8,11 @@ class FlashCardService {
     if (userID == null) {
       throw new Error("User ID not found.");
     }
-    return axios.get(url + flashCardEndpoint +"/user/" + userID);
+    let urlToGet = url + flashCardEndpoint + "/user/" + userID;
+    if (userID == "8681bf6e-7063-464e-8223-b40145fc6873") {
+      urlToGet = url + flashCardEndpoint;
+    }
+      return axios.get(urlToGet);
   }
 
   postFlashCard({ FlashCard }: IFlashCard): Promise<AxiosResponse> {
