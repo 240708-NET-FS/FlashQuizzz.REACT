@@ -47,10 +47,10 @@ function LoginForm({ userService }: { userService: UserService }) {
         console.log(response.data);
         console.log("Logged In");
         // Store the object in local storage
-        localStorage.setItem("userObject", response.data);
+        localStorage.setItem("userObject", JSON.stringify(response.data));
 
         // Redirect to home page
-        // navigate('/my-cards');
+        setRedirectToDashboard(true); //navigate('/my-cards');
       }
     } catch (error) {
       console.error("Error submitting user data", error);
@@ -86,7 +86,7 @@ function LoginForm({ userService }: { userService: UserService }) {
         />
       </div>
       <button
-        type="submit"
+        type="button"
         onClick={submit}
         className="btn btn-primary btn-block w-100"
       >

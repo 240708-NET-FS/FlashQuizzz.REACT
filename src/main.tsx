@@ -7,10 +7,10 @@ import App from './App.tsx'
 import React from 'react'
 
 createRoot(document.getElementById('root')!).render(
-  // <>
-  //   <App />
-  // </>,
-  <StrictMode>
+  <>
     <App />
-  </StrictMode>,
+  </>,
+  // <StrictMode>
+  //   <App />
+  // </StrictMode>,
 )
