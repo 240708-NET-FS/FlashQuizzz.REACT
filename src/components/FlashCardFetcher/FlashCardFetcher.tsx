@@ -28,7 +28,7 @@ function FlashCardFetcher({
   return (
     <div>
       <h3>Flash cards here:</h3>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {flashCards.length > 0 ? (
           flashCards.map((item, index) => (
             <FlashCardComponent key={index} FlashCard={item} />
