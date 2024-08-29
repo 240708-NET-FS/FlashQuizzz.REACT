@@ -32,15 +32,15 @@ function FlashCardComponent({ FlashCard }: IFlashCard): JSX.Element {
 
   return (
     <div>
-      <li>
-        <p>{flashCard.flashCardID}</p>
+      <div>
+        {/* <p>{flashCard.flashCardID}</p> */}
         <p className='flashCard' onClick={onQuestionSide ? () => setOnQuestionSide(false) : () => setOnQuestionSide(true)}>
           {onQuestionSide ? flashCard.flashCardQuestion : flashCard.flashCardAnswer}
         </p>
         {/*<p>{flashCard.flashCardQuestion}</p>
         <p>{flashCard.flashCardAnswer}</p>*/}
         <p>{getCategoryByValue(flashCard.flashCardCategoryID)}</p>
-        <p>{flashCard.createdDate.toString()}</p>
+        {/* <p>{flashCard.createdDate.toString()}</p> */}
 
         <Popup trigger={<button> Edit</button>} modal>
           <EditFlashCardForm
@@ -54,7 +54,7 @@ function FlashCardComponent({ FlashCard }: IFlashCard): JSX.Element {
             flashCard={flashCard}
           />
         </Popup>
-      </li>
+      </div>
     </div>
   );
 }
