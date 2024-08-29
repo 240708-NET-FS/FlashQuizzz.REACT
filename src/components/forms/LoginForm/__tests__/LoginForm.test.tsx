@@ -1,28 +1,19 @@
 import "@testing-library/jest-dom";
 import * as React from "react";
+import Mockrouter from "../../../../mocks/MockRouter";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { render, screen } from "@testing-library/react";
 import { expect, describe, it } from "@jest/globals";
 import UserService from "../../../../services/UserService";
 import userEvent from "@testing-library/user-event";
 import LoginForm from "../LoginForm";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 jest.mock("axios");
 
 describe("Login Form", () => {
   it("renders properly", () => {
     // arrange
-
-    render(
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={<LoginForm userService={new UserService()} />}
-          />
-        </Routes>
-      </BrowserRouter>
-    );
+    render(Mockrouter(<LoginForm userService={new UserService()} />));
 
     // assert
     expect(screen.getByText("Email address")).toBeInTheDocument();
@@ -36,21 +27,24 @@ describe("Login Form", () => {
     const mockAxiosResponse = {
       status: 200,
       statusText: "OK",
+      data: {
+        accessToken: "someToken",
+        userID: "1",
+      },
     };
-    const serviceSpy = jest.spyOn(userService, "login");
-    serviceSpy.mockResolvedValue(mockAxiosResponse as AxiosResponse);
-    render(
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginForm userService={userService} />} />
-        </Routes>
-      </BrowserRouter>
-    );
+    const loginServiceSpy = jest.spyOn(userService, "login");
+    loginServiceSpy.mockResolvedValue(mockAxiosResponse as AxiosResponse);
+
+    const userInfoServiceSpy = jest.spyOn(userService, "getUserInfo");
+    userInfoServiceSpy.mockResolvedValue(mockAxiosResponse as AxiosResponse);
+
+    render(Mockrouter(<LoginForm userService={userService} />));
+
     const loginButton = screen.getByText("Login");
     // act: click submit button
     const click = () => userEvent.click(loginButton);
     await click();
 
-    expect(serviceSpy).toHaveBeenCalled();
+    expect(loginServiceSpy).toHaveBeenCalled();
   });
 });

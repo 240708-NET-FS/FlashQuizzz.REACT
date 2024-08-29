@@ -4,7 +4,8 @@ import { Link, Navigate } from 'react-router-dom';
 import { url } from '../../url.json';
 
 function Menu() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(localStorage.getItem('userObject') ? true : false);
+  // const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [redirectToLogin, setRedirectToLogin] = useState<boolean>(false);
 
   useEffect(() => {

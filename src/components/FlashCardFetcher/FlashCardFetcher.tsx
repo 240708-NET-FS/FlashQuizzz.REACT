@@ -16,8 +16,8 @@ function FlashCardFetcher({
   useEffect(() => {
     async function fetchFlashCards() {
       try {
-        const response = await flashCardService.getFlashCards();
         // comment out for testing
+        const response = await flashCardService.getFlashCards();
         setFlashCards(response.data);
       } catch (error) {
         console.error("Error fetching flash cards: ", error);
@@ -34,7 +34,7 @@ function FlashCardFetcher({
             <FlashCardComponent key={index} FlashCard={item} />
           ))
         ) : (
-          <p>Flash cards loading...</p>
+          <p>No flash cards yet</p>
         )}
       </ul>
       <p></p>

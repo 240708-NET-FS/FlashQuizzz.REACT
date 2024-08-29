@@ -18,10 +18,7 @@ class UserService {
       throw new Error("Password cannot be empty.");
     }
     return axios.post(url + registerEndpoint, {
-      FirstName: userInfo.FirstName,
-      LastName: userInfo.LastName,
-      Email: userInfo.Email,
-      Password: userInfo.Password,
+      ...userInfo,
     });
   }
   login(userInfo: LoginFormState): Promise<AxiosResponse> {
@@ -32,9 +29,20 @@ class UserService {
       throw new Error("Password cannot be empty.");
     }
     return axios.post(url + loginEndpoint, {
-      email: userInfo.email,
-      password: userInfo.password,
+      ...userInfo,
     });
+  }
+
+  getUserInfo(accessToken: string): Promise<AxiosResponse> {
+    return axios.post(
+      url + "/api/user/userinfo",
+      {},
+      {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+      }
+    );
   }
 }
 

@@ -41,16 +41,22 @@ function LoginForm({ userService }: { userService: UserService }) {
   async function submit() {
     try {
       console.log("In Submit function");
-      const response = await userService.login(state);
-      console.log(response);
-      if (response.status == 200) {
-        console.log(response.data);
+      const loginResponse = await userService.login(state);
+      if (loginResponse.status == 200) {
         console.log("Logged In");
         // Store the object in local storage
-        localStorage.setItem("userObject", JSON.stringify(response.data));
-
+        localStorage.setItem("userObject", JSON.stringify(loginResponse.data));
+        const getUserInfoResponse = await userService.getUserInfo(loginResponse.data.accessToken);
+        if (getUserInfoResponse.status == 200) {
+          console.log("User Info Retrieved");
+          localStorage.setItem("userID", getUserInfoResponse.data.userID);
+        }
         // Redirect to home page
-        setRedirectToDashboard(true); //navigate('/my-cards');
+        // navigate('/my-cards');
+        setRedirectToDashboard(true);
+      } else {
+        console.log("Login Failed");
+        alert("Email or Password is incorrect.");
       }
     } catch (error) {
       console.error("Error submitting user data", error);

@@ -6,20 +6,11 @@ import RegisterForm from "../RegisterForm";
 import UserService from "../../../../services/UserService";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MockRouter from "../../../../mocks/MockRouter";
 describe("Register Form", () => {
-  test("register form renders properly", () => {
+  test("register form renders all fields", () => {
     // arrange
-    render(
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={<RegisterForm userService={new UserService()} />}
-          />
-        </Routes>
-      </BrowserRouter>
-    );
+    render(MockRouter(<RegisterForm userService={new UserService()} />));
 
     const submitButton = screen.getByText("Signup");
     const resetButton = screen.getByText("Reset");
@@ -33,16 +24,8 @@ describe("Register Form", () => {
     const userService = new UserService();
     const serviceSpy = jest.spyOn(userService, "register");
     serviceSpy.mockResolvedValue({ status: 200, data: {} } as AxiosResponse);
-    render(
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={<RegisterForm userService={userService} />}
-          />
-        </Routes>
-      </BrowserRouter>
-    );
+    render(MockRouter(<RegisterForm userService={userService} />));
+
     const signupButton = screen.getByText("Signup");
 
     // arrange: get mock function for userservice.register

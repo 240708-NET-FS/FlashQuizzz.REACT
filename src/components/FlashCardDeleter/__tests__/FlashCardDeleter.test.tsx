@@ -1,6 +1,3 @@
-/**
- * @jest-environment jsdom
- */
 import "@testing-library/jest-dom";
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
@@ -12,16 +9,16 @@ import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
 
 describe("Flash Card Deleter", () => {
-  it("renders properly", () => {
+  it("renders with confirmation message", () => {
     // arrange
     const flashCardService = new FlashcardService();
     const flashCard: IFlashCard = {
       FlashCard: {
-        FlashCardID: 1,
-        FlashCardQuestion: "Question",
-        FlashCardAnswer: "Answer",
-        CreatedDate: new Date(Date.now()),
-        FlashCardCategory: 1,
+        flashCardID: 1,
+        flashCardQuestion: "Question",
+        flashCardAnswer: "Answer",
+        createdDate: new Date(Date.now()),
+        flashCardCategoryID: 1,
       },
     };
     // act: render the component
@@ -31,22 +28,22 @@ describe("Flash Card Deleter", () => {
         flashCard={flashCard.FlashCard}
       />
     );
-    const message = `Are you sure you want to delete flashcard ${flashCard.FlashCard.FlashCardID}?`;
+    const message = `Are you sure you want to delete flashcard ${flashCard.FlashCard.flashCardID}?`;
 
     // assert that the message is rendered
     expect(screen.getByText(message)).toBeInTheDocument();
   });
 
-  test("delete button calls event handler", async () => {
+  test("delete button calls deleteFlashCard", async () => {
     // arrange: render component and get delete button
     const flashCardService = new FlashcardService();
     const flashCard: IFlashCard = {
       FlashCard: {
-        FlashCardID: 1,
-        FlashCardQuestion: "Question",
-        FlashCardAnswer: "Answer",
-        CreatedDate: new Date(Date.now()),
-        FlashCardCategory: 1,
+        flashCardID: 1,
+        flashCardQuestion: "Question",
+        flashCardAnswer: "Answer",
+        createdDate: new Date(Date.now()),
+        flashCardCategoryID: 1,
       },
     };
     render(

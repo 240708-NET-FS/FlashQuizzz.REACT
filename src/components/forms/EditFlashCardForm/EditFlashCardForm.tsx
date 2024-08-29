@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import ICreateFlashCardFormState from "../../../interfaces/ICreateFlashCardFormState";
 import FlashCardService from "../../../services/FlashCardService";
 import IFlashCard from "../../../interfaces/IFlashCard";
@@ -22,6 +22,11 @@ type ActionType =
   | {
       type: "reset";
     };
+interface IEditFlashCardState {
+  FlashCardQuestion: string;
+  FlashCardAnswer: string;
+  FlashCardCategory: number;
+}
 
 function formReducer(
   state: ICreateFlashCardFormState,
@@ -36,24 +41,31 @@ function formReducer(
       return { ...state, FlashCardCategory: action.payload };
     case "reset":
       return {
-        FlashCardQuestion: "",
-        FlashCardAnswer: "",
-        FlashCardCategory: Category.None,
+        ...defaultFlashCardState,
       };
     default:
       throw new Error("Unknown action type");
   }
 }
 
+/**
+ * A React component for editing a flash card.
+ * @param {IFlashCard["FlashCard"]} props.flashCard - The flash card to edit.
+ * @param {FlashCardService} props.flashCardService - The service for interacting with flash cards.
+ * @return {JSX.Element} The rendered component.
+ */
 function EditFlashCardForm(props: {
   flashCard: IFlashCard["FlashCard"];
   flashCardService: FlashCardService;
 }) {
-  const [state, dispatch] = useReducer(formReducer, {
-    FlashCardQuestion: "",
-    FlashCardAnswer: "",
-    FlashCardCategory: Category.None,
-  });
+  const [flashCardState, setFlashCard] = React.useState<
+    IFlashCard["FlashCard"]
+  >(props.flashCard);
+  const [state, dispatch] = useReducer(formReducer, defaultFlashCardState);
+
+  useEffect(() => {
+    setFlashCard(props.flashCard);
+  }, [props.flashCard]);
 
   function handleQuestionChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({ type: "editQuestion", payload: event?.target.value });
@@ -75,16 +87,18 @@ function EditFlashCardForm(props: {
     try {
       const cardToPut: IFlashCard = {
         FlashCard: {
-          FlashCardID: props.flashCard.FlashCardID,
-          FlashCardQuestion: state.FlashCardQuestion,
-          FlashCardAnswer: state.FlashCardAnswer,
-          FlashCardCategory: state.FlashCardCategory,
-          CreatedDate: new Date(),
+          userID: flashCardState.userID,
+          flashCardID: flashCardState.flashCardID,
+          flashCardQuestion: state.FlashCardQuestion,
+          flashCardAnswer: state.FlashCardAnswer,
+          flashCardCategoryID: state.FlashCardCategory,
+          createdDate: new Date(),
         },
       };
       const response = await props.flashCardService.putFlashCard(cardToPut);
       if (response.status) {
-        console.log("flash card patched");
+        console.log("flash card put");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error submitting flash card: ", error);
@@ -95,13 +109,13 @@ function EditFlashCardForm(props: {
     <div>
       <h3>Edit a flash card</h3>
       <form>
-        <p>Card ID: {props.flashCard.FlashCardID}</p>
+        <p>Card ID: {flashCardState.flashCardID}</p>
         <label>Question: </label>
         <input
           type="text"
           name="question"
           value={state.FlashCardQuestion}
-          placeholder={props.flashCard.FlashCardQuestion}
+          placeholder={flashCardState.flashCardQuestion}
           onChange={handleQuestionChange}
         />
         <br />
@@ -110,7 +124,7 @@ function EditFlashCardForm(props: {
           type="text"
           name="answer"
           value={state.FlashCardAnswer}
-          placeholder={props.flashCard.FlashCardAnswer}
+          placeholder={flashCardState.flashCardAnswer}
           onChange={handleAnswerChange}
         />
         <br />
@@ -119,18 +133,24 @@ function EditFlashCardForm(props: {
           <Select
             options={options}
             onChange={(choice) => handleCategoryChange(choice!.value)}
-            defaultValue={options[props.flashCard.FlashCardCategory]}
+            defaultValue={options[flashCardState.flashCardCategoryID]}
           />
         </label>
         <button type="button" onClick={handleReset}>
           Reset
         </button>
-        <button type="submit" onClick={handleSubmit}>
+        <button type="button" onClick={handleSubmit}>
           Submit
         </button>
       </form>
     </div>
   );
 }
+
+const defaultFlashCardState: IEditFlashCardState = {
+  FlashCardQuestion: "",
+  FlashCardAnswer: "",
+  FlashCardCategory: Category.None,
+};
 
 export default EditFlashCardForm;

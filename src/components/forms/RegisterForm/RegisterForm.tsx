@@ -86,7 +86,6 @@ function RegisterForm({ userService }: { userService: UserService }) {
     console.log("calling handleFormSubmit");
     try {
       const response = await userService.register(state);
-      console.log(response);
       if (response.status == 200) {
         console.log("registered");
         alert(response.data);
@@ -100,7 +99,7 @@ function RegisterForm({ userService }: { userService: UserService }) {
         handleReset();
       }
     } catch (error) {
-      console.error("Error submitting user data", error);
+      console.error(error);
     }
   }
 
@@ -151,7 +150,7 @@ function RegisterForm({ userService }: { userService: UserService }) {
           value={state.Password}
           onChange={handlePasswordChange}
           className="form-control"
-          placeholder="Password"
+          placeholder="Enter Password (min. length 3)"
         />
       </div>
       <div className="mb-6">

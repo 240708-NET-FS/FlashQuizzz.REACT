@@ -1,3 +1,4 @@
+// Flash card fetcher unit tests
 import "@testing-library/jest-dom";
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
@@ -10,29 +11,40 @@ import { AxiosResponse } from "axios";
 
 const testCards: IFlashCard["FlashCard"][] = [
   {
-    FlashCardID: 1,
-    FlashCardQuestion: "What is React?",
-    FlashCardAnswer: "A library for managing user interfaces",
-    FlashCardCategory: Category.HTML_CSS,
-    CreatedDate: new Date(),
+    flashCardID: 1,
+    flashCardQuestion: "What is React?",
+    flashCardAnswer: "A library for managing user interfaces",
+    flashCardCategoryID: Category.HTML_CSS,
+    createdDate: new Date(),
   },
   {
-    FlashCardID: 2,
-    FlashCardQuestion: "What is API?",
-    FlashCardAnswer: "Application Programming Interface",
-    FlashCardCategory: Category.JavaScript,
-    CreatedDate: new Date(),
+    flashCardID: 2,
+    flashCardQuestion: "What is API?",
+    flashCardAnswer: "Application Programming Interface",
+    flashCardCategoryID: Category.JavaScript,
+    createdDate: new Date(),
   },
   {
-    FlashCardID: 3,
-    FlashCardQuestion: "What is JSX?",
-    FlashCardAnswer: "JavaScript XML",
-    FlashCardCategory: Category.React,
-    CreatedDate: new Date(),
+    flashCardID: 3,
+    flashCardQuestion: "What is JSX?",
+    flashCardAnswer: "JavaScript XML",
+    flashCardCategoryID: Category.React,
+    createdDate: new Date(),
   },
 ];
 
 describe("Flash Card Fetcher", () => {
+  it("renders loading message before flash cards retreived", () => {
+    // arrange: render component
+    const flashCardService = new FlashcardService();
+    const serviceSpy = jest.spyOn(flashCardService, "getFlashCards");
+    serviceSpy.mockResolvedValue({ data: [] } as AxiosResponse);
+    render(<FlashCardFetcher flashCardService={flashCardService} />);
+    const message = "No flash cards yet";
+    // assert
+    expect(screen.getByText(message)).toBeInTheDocument();
+  });
+
   test("renders fetched flash card details", async () => {
     // arrange
     const flashCardService = new FlashcardService();
@@ -42,10 +54,10 @@ describe("Flash Card Fetcher", () => {
 
     testCards.forEach(async (flashCard) => {
       expect(
-        await screen.findByText(flashCard.FlashCardQuestion)
+        await screen.findByText(flashCard.flashCardQuestion)
       ).toBeInTheDocument();
       expect(
-        await screen.findByText(flashCard.FlashCardAnswer)
+        await screen.findByText(flashCard.flashCardAnswer)
       ).toBeInTheDocument();
     });
   });

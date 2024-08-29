@@ -5,16 +5,34 @@ import { url, flashCardEndpoint } from "../../url.json";
 import IFlashCard from "../../interfaces/IFlashCard";
 jest.mock("axios");
 describe("Flash Card Service", () => {
+  describe("get flash cards", () => {
+    // arrange: create mock axios implementation
+    test("calls axios with correct url", async () => {
+      const axiosCallMock = (url: string): Promise<object> =>
+        Promise.resolve({ data: [], config: { url: url } });
+      const axiosMock = axios.get as jest.MockedFunction<typeof axios.post>;
+      axiosMock.mockImplementation(axiosCallMock);
+      localStorage.setItem("userID", "1");
+      // act: invoke getFlashCards
+      const response = await new FlashCardService().getFlashCards();
+      const calledURL = response.config.url;
+
+      // assert: mock should have been invoked with correct url
+      expect(axiosMock).toHaveBeenCalled();
+      expect(calledURL).toEqual(url + flashCardEndpoint + "/user/1");
+    });
+  });
+
   describe("post flash card", () => {
     it("raises an error for incomplete flash cards", () => {
       // arrange: create flashcard
       const flashCard: IFlashCard = {
         FlashCard: {
-          FlashCardQuestion: "",
-          FlashCardAnswer: "",
-          FlashCardID: 1,
-          CreatedDate: new Date(Date.now()),
-          FlashCardCategory: 1,
+          flashCardQuestion: "",
+          flashCardAnswer: "",
+          flashCardID: 1,
+          createdDate: new Date(Date.now()),
+          flashCardCategoryID: 1,
         },
       };
 
@@ -26,36 +44,16 @@ describe("Flash Card Service", () => {
       // assert that error is raised
       expect(postFlashCard).toThrow("Flash card information is incomplete.");
     });
-  });
 
-  describe("get flash cards", () => {
-    // arrange: create mock axios implementation
-    test("calls axios with correct url", async () => {
-      const axiosCallMock = (url: string): Promise<object> =>
-        Promise.resolve({ data: [], config: { url: url } });
-      const axiosMock = axios.get as jest.MockedFunction<typeof axios.post>;
-      axiosMock.mockImplementation(axiosCallMock);
-
-      // act: invoke getFlashCards
-      const response = await new FlashCardService().getFlashCards();
-      const calledURL = response.config.url;
-
-      // assert: mock should have been invoked with correct url
-      expect(axiosMock).toHaveBeenCalled();
-      expect(calledURL).toEqual(url + flashCardEndpoint);
-    });
-  });
-
-  describe("post flash card", () => {
-    test("calls axios with correct url", async () => {
+    test("calls axios with correct url for a complete flash card", async () => {
       const flashCard: IFlashCard = {
         FlashCard: {
-          UserID: 1,
-          FlashCardQuestion: "Question",
-          FlashCardAnswer: "Answer",
-          FlashCardID: 1,
-          CreatedDate: new Date(Date.now()),
-          FlashCardCategory: 1,
+          userID: "1",
+          flashCardQuestion: "Question",
+          flashCardAnswer: "Answer",
+          flashCardID: 1,
+          createdDate: new Date(Date.now()),
+          flashCardCategoryID: 1,
         },
       };
       const axiosCallMock = (url: string): Promise<object> =>
@@ -78,12 +76,12 @@ describe("Flash Card Service", () => {
       // arrange: create flashcard
       const flashCard: IFlashCard = {
         FlashCard: {
-          UserID: 1,
-          FlashCardQuestion: "",
-          FlashCardAnswer: "",
-          FlashCardID: 1,
-          CreatedDate: new Date(Date.now()),
-          FlashCardCategory: 1,
+          userID: "1",
+          flashCardQuestion: "",
+          flashCardAnswer: "",
+          flashCardID: 1,
+          createdDate: new Date(Date.now()),
+          flashCardCategoryID: 1,
         },
       };
 
@@ -97,16 +95,20 @@ describe("Flash Card Service", () => {
     });
 
     it("calls axios with correct url for a complete flash card", async () => {
+      // arrange: create flash card
       const flashCard: IFlashCard = {
         FlashCard: {
-          UserID: 1,
-          FlashCardQuestion: "Question",
-          FlashCardAnswer: "Answer",
-          FlashCardID: 1,
-          CreatedDate: new Date(Date.now()),
-          FlashCardCategory: 1,
+          userID: "1",
+          flashCardQuestion: "Question",
+          flashCardAnswer: "Answer",
+          flashCardID: 1,
+          createdDate: new Date(Date.now()),
+          flashCardCategoryID: 1,
         },
       };
+      localStorage.setItem("userID", flashCard.FlashCard.userID as string);
+
+      // arrange: mock axios
       const axiosCallMock = (url: string): Promise<object> =>
         Promise.resolve({ data: flashCard, config: { url: url } });
       const axiosMock = axios.put as jest.MockedFunction<typeof axios.put>;
@@ -118,7 +120,40 @@ describe("Flash Card Service", () => {
 
       //assert: mock should have been invoked with correct url
       expect(axiosMock).toHaveBeenCalled();
-      expect(calledURL).toEqual(url + flashCardEndpoint);
+      expect(calledURL).toEqual(
+        url + flashCardEndpoint + "/" + flashCard.FlashCard.flashCardID
+      );
+    });
+  });
+
+  describe("delete flash card", () => {
+    it("calls axios with correct url for a complete flash card", async () => {
+      const flashCard: IFlashCard = {
+        FlashCard: {
+          userID: "1",
+          flashCardQuestion: "Question",
+          flashCardAnswer: "Answer",
+          flashCardID: 1,
+          createdDate: new Date(Date.now()),
+          flashCardCategoryID: 1,
+        },
+      };
+      const axiosCallMock = (url: string): Promise<object> =>
+        Promise.resolve({ data: flashCard, config: { url: url } });
+      const axiosMock = axios.delete as jest.MockedFunction<
+        typeof axios.delete
+      >;
+      axiosMock.mockImplementation(axiosCallMock);
+
+      // act: invoke deleteFlashCard
+      const response = await new FlashCardService().deleteFlashCard(1);
+      const calledURL = response.config.url;
+
+      //assert: mock should have been invoked with correct url
+      expect(axiosMock).toHaveBeenCalled();
+      expect(calledURL).toEqual(
+        url + flashCardEndpoint + "/" + flashCard.FlashCard.flashCardID
+      );
     });
   });
 });
