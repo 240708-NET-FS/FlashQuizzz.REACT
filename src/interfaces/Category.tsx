@@ -1,9 +1,9 @@
 //TODO: EDIT AS NEEDED
 enum Category {
   None,
-  HTML_CSS,
+  HTML,
+  CSS,
   JavaScript,
-  dotNet,
   SQL,
   React,
 }
