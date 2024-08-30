@@ -7,11 +7,14 @@ export default {
   },
   moduleFileExtensions: ["ts", "tsx", "js"],
   collectCoverage: true,
-  coverageReporters: ["json", "html", "text"],
+  coverageReporters: ["json", "html", "text", "lcov"],
   coverageThreshold: {
     global: {
-      branches: 20,
+      branches: 30,
     },
   },
   setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
+  moduleNameMapper: {
+    "\\.(css|less)$": "<rootDir>/src/mocks/StyleMock.ts",
+  },
 };

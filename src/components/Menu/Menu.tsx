@@ -51,6 +51,7 @@ function Menu() {
             console.log('Logout successful.');
             // Clear the user token from local storage
             localStorage.removeItem('userObject');
+            localStorage.removeItem('userID');
             console.log('LocalStorage userObject destroyed...');
 
             setIsAuthenticated(false);

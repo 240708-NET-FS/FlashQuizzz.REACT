@@ -14,11 +14,11 @@ describe("Flash Card Deleter", () => {
     const flashCardService = new FlashcardService();
     const flashCard: IFlashCard = {
       FlashCard: {
-        FlashCardID: 1,
-        FlashCardQuestion: "Question",
-        FlashCardAnswer: "Answer",
-        CreatedDate: new Date(Date.now()),
-        FlashCardCategory: 1,
+        flashCardID: 1,
+        flashCardQuestion: "Question",
+        flashCardAnswer: "Answer",
+        createdDate: new Date(Date.now()),
+        flashCardCategoryID: 1,
       },
     };
     // act: render the component
@@ -28,7 +28,7 @@ describe("Flash Card Deleter", () => {
         flashCard={flashCard.FlashCard}
       />
     );
-    const message = `Are you sure you want to delete flashcard ${flashCard.FlashCard.FlashCardID}?`;
+    const message = `Are you sure you want to delete flashcard ${flashCard.FlashCard.flashCardID}?`;
 
     // assert that the message is rendered
     expect(screen.getByText(message)).toBeInTheDocument();
@@ -39,11 +39,11 @@ describe("Flash Card Deleter", () => {
     const flashCardService = new FlashcardService();
     const flashCard: IFlashCard = {
       FlashCard: {
-        FlashCardID: 1,
-        FlashCardQuestion: "Question",
-        FlashCardAnswer: "Answer",
-        CreatedDate: new Date(Date.now()),
-        FlashCardCategory: 1,
+        flashCardID: 1,
+        flashCardQuestion: "Question",
+        flashCardAnswer: "Answer",
+        createdDate: new Date(Date.now()),
+        flashCardCategoryID: 1,
       },
     };
     render(

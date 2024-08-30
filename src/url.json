@@ -1,5 +1,6 @@
 {
-  "url": "https://www.flashquizzz-a7enewa4bqfkghdn.eastus-01.azurewebsites.net",
+  "url": "https://flashquizzz-a7enewa4bqfkghdn.eastus-01.azurewebsites.net",
+  "urlTest": "http://localhost:5010",
   "loginEndpoint": "/login",
   "registerEndpoint": "/register",
   "userEndpoint": "/api/user/user",

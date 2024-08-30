@@ -49,7 +49,7 @@ function LoginForm({ userService }: { userService: UserService }) {
         const getUserInfoResponse = await userService.getUserInfo(loginResponse.data.accessToken);
         if (getUserInfoResponse.status == 200) {
           console.log("User Info Retrieved");
-          localStorage.setItem("userID", loginResponse.data.userID);
+          localStorage.setItem("userID", getUserInfoResponse.data.userID);
         }
         // Redirect to home page
         // navigate('/my-cards');

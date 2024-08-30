@@ -1,6 +1,11 @@
 name: run-tests
 on:
+  push:
+    branches:
+      - testing
+      - main
   pull_request:
+    types: [opened, synchronize, reopened]
     branches:
       - dev
       - main
@@ -8,15 +13,22 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    environment: development
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
+        with:
+          fetch-depth: 0
       - name: setup node env
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
       - name: test
         run: |
           npm ci
           npm run test
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}

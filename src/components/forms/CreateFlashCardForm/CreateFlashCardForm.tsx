@@ -70,17 +70,18 @@ function CreateFlashCardForm({
 
       const cardToPost: IFlashCard = {
         FlashCard: {
-          UserID: userID,
-          FlashCardQuestion: state.FlashCardQuestion,
-          FlashCardAnswer: state.FlashCardAnswer,
-          FlashCardCategory: state.FlashCardCategory,
-          CreatedDate: new Date(),
+          userID: userID,
+          flashCardQuestion: state.FlashCardQuestion,
+          flashCardAnswer: state.FlashCardAnswer,
+          flashCardCategoryID: state.FlashCardCategory,
+          createdDate: new Date(),
         },
       };
 
       const response = await flashCardService.postFlashCard(cardToPost);
       if (response.status) {
         console.log("flash card posted");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error submitting flash card: ", error);
@@ -89,33 +90,53 @@ function CreateFlashCardForm({
 
   return (
     <div>
-      <h3>Add a flash card</h3>
+      <h3 className="text-center">Add a flash card</h3>
       <form data-testid="create-flash-card-form">
-        <label>
-          Question:
-          <input
-            type="text"
-            value={state.FlashCardQuestion}
-            onChange={handleQuestionChange}
-          />
-        </label>
-        <label>
-          Answer:
-          <input
-            type="text"
-            value={state.FlashCardAnswer}
-            onChange={handleAnswerChange}
-          />
-        </label>
-        <label>
-          Category:
-          <Select
-            options={options}
-            onChange={(choice) => handleCategoryChange(choice!.value)}
-          />
-        </label>
-        <button onClick={handleReset}>Reset Fields</button>
-        <button type="button" onClick={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">
+            Question:
+            <input
+              type="text"
+              value={state.FlashCardQuestion}
+              onChange={handleQuestionChange}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            Answer:
+            <input
+              type="text"
+              value={state.FlashCardAnswer}
+              onChange={handleAnswerChange}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            Category:
+            <Select
+              options={options}
+              onChange={(choice) => handleCategoryChange(choice!.value)}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <button
+          type="button"
+          className="btn btn-secondary btn-block mr-3"
+          onClick={handleReset}
+        >
+          Reset Fields
+        </button>
+        &nbsp; &nbsp;
+        <button
+          type="button"
+          className="btn btn-primary btn-block"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </form>

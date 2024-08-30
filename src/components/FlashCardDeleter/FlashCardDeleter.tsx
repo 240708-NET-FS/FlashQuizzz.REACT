@@ -6,18 +6,20 @@ function FlashCardDeleter(props: {
   flashCardService: FlashCardService;
   flashCard: IFlashCard["FlashCard"];
 }) {
+  const [flashCardState, setFlashCard] = React.useState<
+    IFlashCard["FlashCard"]
+  >(props.flashCard);
   useEffect(() => {
-    document.getElementById(
-      "message"
-    )!.innerText = `Are you sure you want to delete flashcard ${props.flashCard.FlashCardID}?`;
+    setFlashCard(props.flashCard);
   }, [props.flashCard]);
 
   async function deleteFlashCard() {
     const response = await props.flashCardService.deleteFlashCard(
-      props.flashCard.FlashCardID!
+      flashCardState.flashCardID!
     );
     if (response.status) {
       console.log("flash card deleted");
+      window.location.reload();
     } else {
       console.log("Error deleting flash card");
     }
@@ -26,9 +28,9 @@ function FlashCardDeleter(props: {
   return (
     <div>
       <h3 id="message">
-        Are you sure you want to delete flashcard {props.flashCard.FlashCardID}?
+        Are you sure you want to delete flashcard {flashCardState.flashCardID}?
       </h3>
-      <button onClick={deleteFlashCard}>Confirm</button>
+      <button className="btn btn-danger" onClick={deleteFlashCard}>Confirm</button>
     </div>
   );
 }

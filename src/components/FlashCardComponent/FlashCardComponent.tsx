@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import IFlashCard from "../../interfaces/IFlashCard";
 import EditFlashCardForm from "../forms/EditFlashCardForm/EditFlashCardForm";
 import FlashCardService from "../../services/FlashCardService";
 import FlashCardDeleter from "../FlashCardDeleter/FlashCardDeleter";
-import CreateRootEditSingleton from "./CreateRootEditSingleton";
-import CreateRootDeleteSingleton from "./CreateRootDeleteSingleton";
 import Popup from "reactjs-popup";
 // import "reactjs-popup/dist/index.css"; //TODO: #14 REMOVE  / Rework - breaks running of component
 import Category from "../../interfaces/Category";
+import "./FlashCardComponent.css";
 
 /**
  * A React component that displays a flashcard with a question, answer, and creation date.
@@ -17,25 +16,13 @@ import Category from "../../interfaces/Category";
  */
 
 function FlashCardComponent({ FlashCard }: IFlashCard): JSX.Element {
-  function showEditCardForm() {
-    const root = CreateRootEditSingleton.getInstance();
-    root.render(
-      <EditFlashCardForm
-        flashCardService={new FlashCardService()}
-        flashCard={FlashCard}
-      />
-    );
-  }
+  const [flashCard, setFlashCard] =
+    React.useState<IFlashCard["FlashCard"]>(FlashCard);
+  const [onQuestionSide, setOnQuestionSide] = React.useState<boolean>(true);
 
-  function showDeleteConfirm() {
-    const root = CreateRootDeleteSingleton.getInstance();
-    root.render(
-      <FlashCardDeleter
-        flashCardService={new FlashCardService()}
-        flashCard={FlashCard}
-      />
-    );
-  }
+  useEffect(() => {
+    setFlashCard(FlashCard);
+  }, [FlashCard]);
 
   function getCategoryByValue(input: number): string | undefined {
     return Object.keys(Category).find(
@@ -44,33 +31,32 @@ function FlashCardComponent({ FlashCard }: IFlashCard): JSX.Element {
   }
 
   return (
-    <div>
-      <li>
-        <p>{FlashCard.FlashCardID}</p>
-        <p>{FlashCard.FlashCardQuestion}</p>
-        <p>{FlashCard.FlashCardAnswer}</p>
-        <p>{getCategoryByValue(FlashCard.FlashCardCategory)}</p>
-        <p>{FlashCard.CreatedDate.toString()}</p>
+    <div style={{ margin: "20px" }}>
+      <div>
+        {/* <p>{flashCard.flashCardID}</p> */}
+        <p className={`${onQuestionSide ? 'flashCard' : 'answer'}`} onClick={onQuestionSide ? () => setOnQuestionSide(false) : () => setOnQuestionSide(true)}>
+          {onQuestionSide ? flashCard.flashCardQuestion : flashCard.flashCardAnswer}
+        </p>
+        {/*<p>{flashCard.flashCardQuestion}</p>
+        <p>{flashCard.flashCardAnswer}</p>*/}
+        <p style={{ margin: "2px" }}>{getCategoryByValue(flashCard.flashCardCategoryID)}</p>
+        {/* <p>{flashCard.createdDate.toString()}</p> */}
 
-        <Popup
-          trigger={<button onClick={showEditCardForm}> Edit</button>}
-          modal
-        >
+        <Popup trigger={<button className="btn btn-primary mr-3"> Edit</button>} contentStyle={{ padding: '20px' }} modal>
           <EditFlashCardForm
             flashCardService={new FlashCardService()}
-            flashCard={FlashCard}
+            flashCard={flashCard}
           />
         </Popup>
-        <Popup
-          trigger={<button onClick={showDeleteConfirm}> Delete</button>}
-          modal
-        >
+        &nbsp;&nbsp;
+        <Popup trigger={<button className="btn btn-danger"> Delete</button>} contentStyle={{ padding: '20px' }} modal>
           <FlashCardDeleter
             flashCardService={new FlashCardService()}
-            flashCard={FlashCard}
+            flashCard={flashCard}
           />
         </Popup>
-      </li>
+      </div>
+      <hr />
     </div>
   );
 }
