@@ -28,7 +28,7 @@ function FlashCardFetcher({
   return (
     <div>
       <h3>Flash cards here:</h3>
-      <ul>
+      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
         {flashCards.length > 0 ? (
           flashCards.map((item, index) => (
             <FlashCardComponent key={index} FlashCard={item} />
@@ -36,7 +36,7 @@ function FlashCardFetcher({
         ) : (
           <p>No flash cards yet</p>
         )}
-      </ul>
+      </div>
       <p></p>
     </div>
   );

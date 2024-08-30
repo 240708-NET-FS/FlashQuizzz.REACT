@@ -19,6 +19,7 @@ function FlashCardDeleter(props: {
     );
     if (response.status) {
       console.log("flash card deleted");
+      window.location.reload();
     } else {
       console.log("Error deleting flash card");
     }
@@ -29,7 +30,7 @@ function FlashCardDeleter(props: {
       <h3 id="message">
         Are you sure you want to delete flashcard {flashCardState.flashCardID}?
       </h3>
-      <button onClick={deleteFlashCard}>Confirm</button>
+      <button className="btn btn-danger" onClick={deleteFlashCard}>Confirm</button>
     </div>
   );
 }
