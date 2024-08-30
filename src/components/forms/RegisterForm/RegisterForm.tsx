@@ -111,47 +111,57 @@ function RegisterForm({ userService }: { userService: UserService }) {
     <form className="mb-6">
       <h4>&nbsp;</h4>
       <div className="mb-3">
-        <label className="form-label">First Name</label>
-        <input
-          type="text"
-          value={state.FirstName}
-          onChange={handleFirstNameChange}
-          className="form-control"
-          placeholder="Enter first name"
-        />
+        <label className="form-label">
+          First Name
+          <input
+            type="text"
+            value={state.FirstName}
+            onChange={handleFirstNameChange}
+            className="form-control"
+            placeholder="Enter first name"
+          />
+        </label>
       </div>
       <div className="mb-3">
-        <label className="form-label">Last Name</label>
-        <input
-          type="text"
-          value={state.LastName}
-          onChange={handleLastNameChange}
-          className="form-control"
-          placeholder="Enter last name"
-        />
+        <label className="form-label">
+          Last Name
+          <input
+            type="text"
+            value={state.LastName}
+            onChange={handleLastNameChange}
+            className="form-control"
+            placeholder="Enter last name"
+          />
+        </label>
       </div>
       <div className="mb-3">
-        <label className="form-label">Email address</label>
-        <input
-          type="email"
-          value={state.Email}
-          onChange={handleEmailChange}
-          className={!isEmailValid ? "form-control is-invalid" : "form-control"}
-          placeholder="Enter email"
-        />
+        <label className="form-label">
+          Email address
+          <input
+            type="email"
+            value={state.Email}
+            onChange={handleEmailChange}
+            className={
+              !isEmailValid ? "form-control is-invalid" : "form-control"
+            }
+            placeholder="Enter email"
+          />
+        </label>
         {!isEmailValid && (
           <div className="text-danger">Please enter a valid email address.</div>
         )}
       </div>
       <div className="mb-3">
-        <label className="form-label">Password</label>
-        <input
-          type="password"
-          value={state.Password}
-          onChange={handlePasswordChange}
-          className="form-control"
-          placeholder="Enter Password (min. length 3)"
-        />
+        <label className="form-label">
+          Password
+          <input
+            type="password"
+            value={state.Password}
+            onChange={handlePasswordChange}
+            className="form-control"
+            placeholder="Enter Password (min. length 3)"
+          />
+        </label>
       </div>
       <div className="mb-6">
         <button
