@@ -14,7 +14,7 @@ const testCards: IFlashCard["FlashCard"][] = [
     flashCardID: 1,
     flashCardQuestion: "What is React?",
     flashCardAnswer: "A library for managing user interfaces",
-    flashCardCategoryID: Category.HTML_CSS,
+    flashCardCategoryID: Category.HTML,
     createdDate: new Date(),
   },
   {

@@ -1,14 +1,14 @@
 import axios, { AxiosResponse } from "axios";
 import { url } from "../url.json";
 
-// Define the type for your data
-interface FlashCard {
-  flashCardID: number;
-  flashCardCategory: number;
-  flashCardQuestion: string;
-  flashCardAnswer: string;
-  createdDate: string;
-}
+// // Define the type for your data
+// interface FlashCard {
+//   flashCardID: number;
+//   flashCardCategory: number;
+//   flashCardQuestion: string;
+//   flashCardAnswer: string;
+//   createdDate: string;
+// }
 
 class DashboardService {
   async getUserID(accessToken: string): Promise<AxiosResponse> {

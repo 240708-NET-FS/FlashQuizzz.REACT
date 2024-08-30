@@ -90,8 +90,8 @@ describe("Edit Flash Card Form", () => {
 
     // assert: fields are now blank for question, answer, and category is none
 
-    expect(screen.getByPlaceholderText("Question")).toHaveValue("");
-    expect(screen.getByPlaceholderText("Answer")).toHaveValue("");
+    expect(screen.getByLabelText("Question: ")).toHaveValue("");
+    expect(screen.getByLabelText("Answer: ")).toHaveValue("");
   });
 
   test("user can edit flash card details", async () => {
@@ -112,8 +112,8 @@ describe("Edit Flash Card Form", () => {
         flashCard={flashCard.FlashCard}
       />
     );
-    const questionInput = screen.getByPlaceholderText("Question");
-    const answerInput = screen.getByPlaceholderText("Answer");
+    const questionInput = screen.getByLabelText("Question: ");
+    const answerInput = screen.getByLabelText("Answer: ");
     const selectInput = screen.getByText(options[2].label);
 
     // act: user can edit question, answer, and category

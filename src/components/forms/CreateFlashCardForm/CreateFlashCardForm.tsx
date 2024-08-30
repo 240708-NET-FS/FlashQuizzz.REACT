@@ -94,43 +94,49 @@ function CreateFlashCardForm({
       <form data-testid="create-flash-card-form">
         <div className="mb-3">
           <label className="form-label">
-          Question:
+            Question:
+            <input
+              type="text"
+              value={state.FlashCardQuestion}
+              onChange={handleQuestionChange}
+              className="form-control"
+            />
           </label>
-          <input
-            type="text"
-            value={state.FlashCardQuestion}
-            onChange={handleQuestionChange}
-            className="form-control"
-          />
         </div>
-
         <div className="mb-3">
           <label className="form-label">
-          Answer:
+            Answer:
+            <input
+              type="text"
+              value={state.FlashCardAnswer}
+              onChange={handleAnswerChange}
+              className="form-control"
+            />
           </label>
-          <input
-            type="text"
-            value={state.FlashCardAnswer}
-            onChange={handleAnswerChange}
-            className="form-control"
-          />
         </div>
-        
         <div className="mb-3">
           <label className="form-label">
-          Category:
+            Category:
+            <Select
+              options={options}
+              onChange={(choice) => handleCategoryChange(choice!.value)}
+              className="form-control"
+            />
           </label>
-          <Select
-            options={options}
-            onChange={(choice) => handleCategoryChange(choice!.value)}
-            className="form-control"
-          />
         </div>
-        
-        <button type="button" className="btn btn-secondary btn-block mr-3" onClick={handleReset}>Reset Fields</button>
-        &nbsp;
-        &nbsp;
-        <button type="button" className="btn btn-primary btn-block" onClick={handleSubmit}>
+        <button
+          type="button"
+          className="btn btn-secondary btn-block mr-3"
+          onClick={handleReset}
+        >
+          Reset Fields
+        </button>
+        &nbsp; &nbsp;
+        <button
+          type="button"
+          className="btn btn-primary btn-block"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </form>
