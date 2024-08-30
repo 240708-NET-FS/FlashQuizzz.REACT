@@ -144,7 +144,6 @@ function EditFlashCardForm(props: {
               onChange={handleAnswerChange}
               className="form-control"
             />
-            {flashCardState.flashCardAnswer}
           </label>
         </div>
         <div className="mb-3">

@@ -22,7 +22,7 @@ describe("Flash Card Component", () => {
     render(<FlashCardComponent FlashCard={flashCard.FlashCard} />);
 
     expect(screen.getByText("My Question")).toBeInTheDocument();
-    expect(screen.getByText("My Answer")).not.toBeInTheDocument();
+    expect(screen.queryByText("My Answer")).not.toBeInTheDocument();
   });
 
   it("renders the flash card answer when flash card is clicked", async () => {
@@ -43,7 +43,7 @@ describe("Flash Card Component", () => {
     await userEvent.click(screen.getByText("My Question"));
 
     //assert
-    expect(screen.getByText("My Question")).not.toBeInTheDocument();
+    expect(screen.queryByText("My Question")).not.toBeInTheDocument();
     expect(screen.getByText("My Answer")).toBeInTheDocument();
   });
 });
