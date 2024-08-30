@@ -32,29 +32,31 @@ function FlashCardComponent({ FlashCard }: IFlashCard): JSX.Element {
 
   return (
     <div>
-      <li>
-        <p>{flashCard.flashCardID}</p>
-        <p className='flashCard' onClick={onQuestionSide ? () => setOnQuestionSide(false) : () => setOnQuestionSide(true)}>
+      <li style={{ listStyle: "none", marginTop: "20px", marginBottom: "15px" }}>
+        <p style={{ margin: "2px" }}>{flashCard.flashCardID}</p>
+        <p className={`${onQuestionSide ? 'flashCard' : 'answer'}`} onClick={onQuestionSide ? () => setOnQuestionSide(false) : () => setOnQuestionSide(true)}>
           {onQuestionSide ? flashCard.flashCardQuestion : flashCard.flashCardAnswer}
         </p>
         {/*<p>{flashCard.flashCardQuestion}</p>
         <p>{flashCard.flashCardAnswer}</p>*/}
-        <p>{getCategoryByValue(flashCard.flashCardCategoryID)}</p>
-        <p>{flashCard.createdDate.toString()}</p>
+        <p style={{ margin: "2px" }}>{getCategoryByValue(flashCard.flashCardCategoryID)}</p>
+        <p style={{ margin: "2px" }}>{flashCard.createdDate.toString()}</p>
 
-        <Popup trigger={<button> Edit</button>} modal>
+        <Popup trigger={<button className="btn btn-primary mr-3"> Edit</button>} contentStyle={{ padding: '20px' }} modal>
           <EditFlashCardForm
             flashCardService={new FlashCardService()}
             flashCard={flashCard}
           />
         </Popup>
-        <Popup trigger={<button> Delete</button>} modal>
+        &nbsp;&nbsp;
+        <Popup trigger={<button className="btn btn-danger"> Delete</button>} contentStyle={{ padding: '20px' }} modal>
           <FlashCardDeleter
             flashCardService={new FlashCardService()}
             flashCard={flashCard}
           />
         </Popup>
       </li>
+      <hr />
     </div>
   );
 }

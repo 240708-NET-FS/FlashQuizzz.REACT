@@ -22,16 +22,15 @@ type ActionType =
   | {
       type: "reset";
     };
+
+// Define the initial state
 interface IEditFlashCardState {
   FlashCardQuestion: string;
   FlashCardAnswer: string;
   FlashCardCategory: number;
 }
 
-function formReducer(
-  state: ICreateFlashCardFormState,
-  action: ActionType
-): ICreateFlashCardFormState {
+function formReducer(state: ICreateFlashCardFormState, action: ActionType): ICreateFlashCardFormState {
   switch (action.type) {
     case "editQuestion":
       return { ...state, FlashCardQuestion: action.payload };
@@ -54,20 +53,23 @@ function formReducer(
  * @param {FlashCardService} props.flashCardService - The service for interacting with flash cards.
  * @return {JSX.Element} The rendered component.
  */
-function EditFlashCardForm(props: {
-  flashCard: IFlashCard["FlashCard"];
-  flashCardService: FlashCardService;
-}) {
-  const [flashCardState, setFlashCard] = React.useState<
-    IFlashCard["FlashCard"]
-  >(props.flashCard);
+function EditFlashCardForm(props: { flashCard: IFlashCard["FlashCard"]; flashCardService: FlashCardService;}) {
+
+  const [flashCardState, setFlashCard] = React.useState<IFlashCard["FlashCard"]>(props.flashCard);
   const [state, dispatch] = useReducer(formReducer, defaultFlashCardState);
 
   useEffect(() => {
     setFlashCard(props.flashCard);
+    //
+    state.FlashCardAnswer = props.flashCard.flashCardAnswer;
+    state.FlashCardQuestion = props.flashCard.flashCardQuestion;
+    //
   }, [props.flashCard]);
 
-  function handleQuestionChange(event: React.ChangeEvent<HTMLInputElement>) {
+  // function handleQuestionChange(event: React.ChangeEvent<HTMLInputElement>) {
+  //   dispatch({ type: "editQuestion", payload: event?.target.value });
+  // }
+  function handleQuestionChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     dispatch({ type: "editQuestion", payload: event?.target.value });
   }
   function handleAnswerChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -107,39 +109,65 @@ function EditFlashCardForm(props: {
 
   return (
     <div>
-      <h3>Edit a flash card</h3>
+      <h3 className="text-center">Edit a flash card</h3>
       <form>
         <p>Card ID: {flashCardState.flashCardID}</p>
-        <label>Question: </label>
-        <input
-          type="text"
-          name="question"
-          value={state.FlashCardQuestion}
-          placeholder={flashCardState.flashCardQuestion}
-          onChange={handleQuestionChange}
-        />
-        <br />
-        <label>Answer: </label>
-        <input
-          type="text"
-          name="answer"
-          value={state.FlashCardAnswer}
-          placeholder={flashCardState.flashCardAnswer}
-          onChange={handleAnswerChange}
-        />
-        <br />
-        <label>
-          Category:
+        <div className="mb-3">
+          <label className="form-label">Question: </label>
+          {/* <input
+            type="text"
+            name="question"
+            value={state.FlashCardQuestion}
+            placeholder={flashCardState.flashCardQuestion}
+            onChange={handleQuestionChange}
+            className="form-control"
+          /> */}
+          <textarea
+            rows={4}
+            name="question"
+            onChange={handleQuestionChange}
+            className="form-control"
+            value={state.FlashCardQuestion}
+          >{flashCardState.flashCardQuestion}</textarea>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Answer: </label>
+          {/* <input
+            type="text"
+            name="answer"
+            value={state.FlashCardAnswer}
+            onChange={handleAnswerChange}
+            className="form-control"
+          /> */}
+          <input
+            type="text"
+            name="answer"
+            value={state.FlashCardAnswer}
+            placeholder={flashCardState.flashCardAnswer}
+            onChange={handleAnswerChange}
+            className="form-control"
+          />
+          {flashCardState.flashCardAnswer}
+        </div>
+        
+        <div className="mb-3">
+          <label className="form-label">
+            Category:
+          </label>
           <Select
             options={options}
             onChange={(choice) => handleCategoryChange(choice!.value)}
             defaultValue={options[flashCardState.flashCardCategoryID]}
+            className="form-control"
           />
-        </label>
-        <button type="button" onClick={handleReset}>
+        </div>
+        
+        <button type="button" className="btn btn-secondary btn-block" onClick={handleReset}>
           Reset
         </button>
-        <button type="button" onClick={handleSubmit}>
+        &nbsp;
+        &nbsp;
+        <button type="button" className="btn btn-primary btn-block" onClick={handleSubmit}>
           Submit
         </button>
       </form>
