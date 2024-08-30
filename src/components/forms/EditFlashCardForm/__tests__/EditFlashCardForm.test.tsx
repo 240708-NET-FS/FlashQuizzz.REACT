@@ -31,8 +31,8 @@ describe("Edit Flash Card Form", () => {
 
     jest.spyOn(flashCardService, "putFlashCard");
 
-    expect(screen.getByPlaceholderText("Question")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Answer")).toBeInTheDocument();
+    expect(screen.getByText("Question")).toBeInTheDocument();
+    expect(screen.getByText("Answer")).toBeInTheDocument();
   });
 
   test("submit button calls event handler", async () => {
@@ -84,14 +84,14 @@ describe("Edit Flash Card Form", () => {
       />
     );
     const resetButton = screen.getByText("Reset");
-    const clickButton = () => userEvent.click(resetButton);
+    const clickButton = async () => userEvent.click(resetButton);
     //act: click reset button
     await clickButton();
 
     // assert: fields are now blank for question, answer, and category is none
 
-    expect(screen.getByLabelText("Question: ")).toHaveValue("");
-    expect(screen.getByLabelText("Answer: ")).toHaveValue("");
+    expect(screen.getByLabelText("Question:")).toHaveValue("");
+    expect(screen.getByLabelText("Answer:")).toHaveValue("");
   });
 
   test("user can edit flash card details", async () => {
@@ -112,8 +112,8 @@ describe("Edit Flash Card Form", () => {
         flashCard={flashCard.FlashCard}
       />
     );
-    const questionInput = screen.getByLabelText("Question: ");
-    const answerInput = screen.getByLabelText("Answer: ");
+    const questionInput = screen.getByLabelText("Question:");
+    const answerInput = screen.getByPlaceholderText("Answer");
     const selectInput = screen.getByText(options[2].label);
 
     // act: user can edit question, answer, and category

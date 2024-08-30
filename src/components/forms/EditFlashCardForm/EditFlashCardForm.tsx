@@ -30,7 +30,10 @@ interface IEditFlashCardState {
   FlashCardCategory: number;
 }
 
-function formReducer(state: ICreateFlashCardFormState, action: ActionType): ICreateFlashCardFormState {
+function formReducer(
+  state: ICreateFlashCardFormState,
+  action: ActionType
+): ICreateFlashCardFormState {
   switch (action.type) {
     case "editQuestion":
       return { ...state, FlashCardQuestion: action.payload };
@@ -53,9 +56,13 @@ function formReducer(state: ICreateFlashCardFormState, action: ActionType): ICre
  * @param {FlashCardService} props.flashCardService - The service for interacting with flash cards.
  * @return {JSX.Element} The rendered component.
  */
-function EditFlashCardForm(props: { flashCard: IFlashCard["FlashCard"]; flashCardService: FlashCardService;}) {
-
-  const [flashCardState, setFlashCard] = React.useState<IFlashCard["FlashCard"]>(props.flashCard);
+function EditFlashCardForm(props: {
+  flashCard: IFlashCard["FlashCard"];
+  flashCardService: FlashCardService;
+}) {
+  const [flashCardState, setFlashCard] = React.useState<
+    IFlashCard["FlashCard"]
+  >(props.flashCard);
   const [state, dispatch] = useReducer(formReducer, defaultFlashCardState);
 
   useEffect(() => {
@@ -113,61 +120,57 @@ function EditFlashCardForm(props: { flashCard: IFlashCard["FlashCard"]; flashCar
       <form>
         <p>Card ID: {flashCardState.flashCardID}</p>
         <div className="mb-3">
-          <label className="form-label">Question: </label>
-          {/* <input
-            type="text"
-            name="question"
-            value={state.FlashCardQuestion}
-            placeholder={flashCardState.flashCardQuestion}
-            onChange={handleQuestionChange}
-            className="form-control"
-          /> */}
-          <textarea
-            rows={4}
-            name="question"
-            onChange={handleQuestionChange}
-            className="form-control"
-            value={state.FlashCardQuestion}
-          >{flashCardState.flashCardQuestion}</textarea>
+          <label className="form-label">
+            Question:
+            <textarea
+              rows={4}
+              name="question"
+              onChange={handleQuestionChange}
+              className="form-control"
+              value={state.FlashCardQuestion}
+            >
+              {flashCardState.flashCardQuestion}
+            </textarea>
+          </label>
         </div>
         <div className="mb-3">
-          <label className="form-label">Answer: </label>
-          {/* <input
-            type="text"
-            name="answer"
-            value={state.FlashCardAnswer}
-            onChange={handleAnswerChange}
-            className="form-control"
-          /> */}
-          <input
-            type="text"
-            name="answer"
-            value={state.FlashCardAnswer}
-            placeholder={flashCardState.flashCardAnswer}
-            onChange={handleAnswerChange}
-            className="form-control"
-          />
-          {flashCardState.flashCardAnswer}
+          <label className="form-label">
+            Answer:
+            <input
+              type="text"
+              name="answer"
+              value={state.FlashCardAnswer}
+              placeholder={flashCardState.flashCardAnswer}
+              onChange={handleAnswerChange}
+              className="form-control"
+            />
+            {flashCardState.flashCardAnswer}
+          </label>
         </div>
-        
         <div className="mb-3">
           <label className="form-label">
             Category:
+            <Select
+              options={options}
+              onChange={(choice) => handleCategoryChange(choice!.value)}
+              defaultValue={options[flashCardState.flashCardCategoryID]}
+              className="form-control"
+            />
           </label>
-          <Select
-            options={options}
-            onChange={(choice) => handleCategoryChange(choice!.value)}
-            defaultValue={options[flashCardState.flashCardCategoryID]}
-            className="form-control"
-          />
         </div>
-        
-        <button type="button" className="btn btn-secondary btn-block" onClick={handleReset}>
+        <button
+          type="button"
+          className="btn btn-secondary btn-block"
+          onClick={handleReset}
+        >
           Reset
         </button>
-        &nbsp;
-        &nbsp;
-        <button type="button" className="btn btn-primary btn-block" onClick={handleSubmit}>
+        &nbsp; &nbsp;
+        <button
+          type="button"
+          className="btn btn-primary btn-block"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </form>
