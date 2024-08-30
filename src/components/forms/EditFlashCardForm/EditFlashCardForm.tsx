@@ -22,6 +22,8 @@ type ActionType =
   | {
       type: "reset";
     };
+
+// Define the initial state
 interface IEditFlashCardState {
   FlashCardQuestion: string;
   FlashCardAnswer: string;
@@ -65,9 +67,16 @@ function EditFlashCardForm(props: {
 
   useEffect(() => {
     setFlashCard(props.flashCard);
+    //
+    state.FlashCardAnswer = props.flashCard.flashCardAnswer;
+    state.FlashCardQuestion = props.flashCard.flashCardQuestion;
+    //
   }, [props.flashCard]);
 
-  function handleQuestionChange(event: React.ChangeEvent<HTMLInputElement>) {
+  // function handleQuestionChange(event: React.ChangeEvent<HTMLInputElement>) {
+  //   dispatch({ type: "editQuestion", payload: event?.target.value });
+  // }
+  function handleQuestionChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     dispatch({ type: "editQuestion", payload: event?.target.value });
   }
   function handleAnswerChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -107,39 +116,60 @@ function EditFlashCardForm(props: {
 
   return (
     <div>
-      <h3>Edit a flash card</h3>
+      <h3 className="text-center">Edit a flash card</h3>
       <form>
         <p>Card ID: {flashCardState.flashCardID}</p>
-        <label>Question: </label>
-        <input
-          type="text"
-          name="question"
-          value={state.FlashCardQuestion}
-          placeholder={flashCardState.flashCardQuestion}
-          onChange={handleQuestionChange}
-        />
-        <br />
-        <label>Answer: </label>
-        <input
-          type="text"
-          name="answer"
-          value={state.FlashCardAnswer}
-          placeholder={flashCardState.flashCardAnswer}
-          onChange={handleAnswerChange}
-        />
-        <br />
-        <label>
-          Category:
-          <Select
-            options={options}
-            onChange={(choice) => handleCategoryChange(choice!.value)}
-            defaultValue={options[flashCardState.flashCardCategoryID]}
-          />
-        </label>
-        <button type="button" onClick={handleReset}>
+        <div className="mb-3">
+          <label className="form-label">
+            Question:
+            <textarea
+              rows={4}
+              name="question"
+              onChange={handleQuestionChange}
+              className="form-control"
+              value={state.FlashCardQuestion}
+            >
+              {flashCardState.flashCardQuestion}
+            </textarea>
+          </label>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            Answer:
+            <input
+              type="text"
+              name="answer"
+              value={state.FlashCardAnswer}
+              placeholder={flashCardState.flashCardAnswer}
+              onChange={handleAnswerChange}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <div className="mb-3">
+          <label className="form-label">
+            Category:
+            <Select
+              options={options}
+              onChange={(choice) => handleCategoryChange(choice!.value)}
+              defaultValue={options[flashCardState.flashCardCategoryID]}
+              className="form-control"
+            />
+          </label>
+        </div>
+        <button
+          type="button"
+          className="btn btn-secondary btn-block"
+          onClick={handleReset}
+        >
           Reset
         </button>
-        <button type="button" onClick={handleSubmit}>
+        &nbsp; &nbsp;
+        <button
+          type="button"
+          className="btn btn-primary btn-block"
+          onClick={handleSubmit}
+        >
           Submit
         </button>
       </form>

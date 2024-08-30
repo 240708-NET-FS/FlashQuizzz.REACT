@@ -3,7 +3,7 @@ import * as React from "react";
 import EditFlashCardForm from "../EditFlashCardForm";
 import FlashCardService from "../../../../services/FlashCardService";
 import IFlashCard from "../../../../interfaces/IFlashCard";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { test, expect, describe } from "@jest/globals";
 import userEvent from "@testing-library/user-event";
 import { AxiosResponse } from "axios";
@@ -31,8 +31,8 @@ describe("Edit Flash Card Form", () => {
 
     jest.spyOn(flashCardService, "putFlashCard");
 
-    expect(screen.getByPlaceholderText("Question")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Answer")).toBeInTheDocument();
+    expect(screen.getByLabelText("Question:")).toBeInTheDocument();
+    expect(screen.getByLabelText("Answer:")).toBeInTheDocument();
   });
 
   test("submit button calls event handler", async () => {
@@ -84,14 +84,17 @@ describe("Edit Flash Card Form", () => {
       />
     );
     const resetButton = screen.getByText("Reset");
-    const clickButton = () => userEvent.click(resetButton);
     //act: click reset button
-    await clickButton();
+    await userEvent.click(resetButton);
 
     // assert: fields are now blank for question, answer, and category is none
 
-    expect(screen.getByPlaceholderText("Question")).toHaveValue("");
-    expect(screen.getByPlaceholderText("Answer")).toHaveValue("");
+    expect(screen.getByLabelText("Question:")).toHaveValue(
+      flashCard.FlashCard.flashCardQuestion
+    );
+    expect(screen.getByLabelText("Answer:")).toHaveValue(
+      flashCard.FlashCard.flashCardAnswer
+    );
   });
 
   test("user can edit flash card details", async () => {
@@ -112,13 +115,15 @@ describe("Edit Flash Card Form", () => {
         flashCard={flashCard.FlashCard}
       />
     );
-    const questionInput = screen.getByPlaceholderText("Question");
+    const questionInput = screen.getByLabelText("Question:");
     const answerInput = screen.getByPlaceholderText("Answer");
     const selectInput = screen.getByText(options[2].label);
 
     // act: user can edit question, answer, and category
-    await userEvent.type(questionInput, "Edited Question");
-    await userEvent.type(answerInput, "Edited Answer");
+    await userEvent.tripleClick(questionInput);
+    await userEvent.paste("Edited Question");
+    await userEvent.tripleClick(answerInput);
+    await userEvent.paste("Edited Answer");
     await selectEvent.select(selectInput, options[3].label);
 
     // assert: new edits are reflected in DOM

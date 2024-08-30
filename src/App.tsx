@@ -8,6 +8,7 @@ import MyCardsPage from "./pages/MyCardsPage/MyCardsPage";
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Menu from './components/Menu/Menu';
+import DashboardPage from "./pages/DashboardPage/DashboardPage";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/my-cards" element={<MyCardsPage />} />
-              {/* <Route path="/dashboard" element={<MyDashboardPage />} /> */}
+              <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/" element={<MyCardsPage />} />
             </Routes>
           </div>

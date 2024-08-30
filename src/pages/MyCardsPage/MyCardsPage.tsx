@@ -8,7 +8,7 @@ import CreateFlashCardForm from "../../components/forms/CreateFlashCardForm/Crea
 function MyCardsPage() {
   return (
     <div>
-      <Popup trigger={<button>Add flash card</button>} modal>
+      <Popup trigger={<button className="btn btn-primary mb-3">Add flash card</button>} contentStyle={{ padding: '20px' }} modal>
         <CreateFlashCardForm flashCardService={new FlashcardService()} />
       </Popup>
       <h1>My Cards</h1>

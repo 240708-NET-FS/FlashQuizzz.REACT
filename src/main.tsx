@@ -6,8 +6,11 @@ import App from "./App.tsx";
 // import './index.css'
 import React from "react";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+createRoot(document.getElementById('root')!).render(
+  <>
     <App />
-  </StrictMode>
-);
+  </>,
+  // <StrictMode>
+  //   <App />
+  // </StrictMode>,
+)
