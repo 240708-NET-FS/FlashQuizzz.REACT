@@ -46,7 +46,9 @@ function LoginForm({ userService }: { userService: UserService }) {
         console.log("Logged In");
         // Store the object in local storage
         localStorage.setItem("userObject", JSON.stringify(loginResponse.data));
-        const getUserInfoResponse = await userService.getUserInfo(loginResponse.data.accessToken);
+        const getUserInfoResponse = await userService.getUserInfo(
+          loginResponse.data.accessToken
+        );
         if (getUserInfoResponse.status == 200) {
           console.log("User Info Retrieved");
           localStorage.setItem("userID", getUserInfoResponse.data.userID);
@@ -72,24 +74,28 @@ function LoginForm({ userService }: { userService: UserService }) {
     <form className="mb-6">
       <h4>&nbsp;</h4>
       <div className="mb-3">
-        <label className="form-label">Email address</label>
-        <input
-          type="email"
-          value={state.email}
-          onChange={handleEmailChange}
-          className="form-control"
-          placeholder="Enter email"
-        />
+        <label className="form-label">
+          Email address
+          <input
+            type="email"
+            value={state.email}
+            onChange={handleEmailChange}
+            className="form-control"
+            placeholder="Enter email"
+          />
+        </label>
       </div>
       <div className="mb-3">
-        <label className="form-label">Password</label>
-        <input
-          type="password"
-          value={state.password}
-          onChange={handlePasswordChange}
-          className="form-control"
-          placeholder="Password"
-        />
+        <label className="form-label">
+          Password
+          <input
+            type="password"
+            value={state.password}
+            onChange={handlePasswordChange}
+            className="form-control"
+            placeholder="Password"
+          />
+        </label>
       </div>
       <button
         type="button"
